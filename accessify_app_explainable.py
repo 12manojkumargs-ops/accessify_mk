@@ -49,7 +49,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 # ============================================================
 
 st.set_page_config(
-    page_title="Accessify | SDG 10",
+    page_title="Accessify",
     page_icon="♿",
     layout="wide",
     initial_sidebar_state="expanded",
