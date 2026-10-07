@@ -1309,13 +1309,13 @@ def calculate_accessibility_score(issues, html_text):
 
 
 def score_label(score):
-    if score >= 90:
+    if score >= 85:
         return "Excellent"
-    if score >= 80:
+    if score >= 75:
         return "Good"
-    if score >= 65:
-        return "Needs Improvement"
     if score >= 50:
+        return "Needs Improvement"
+    if score >= 35:
         return "Poor"
     return "Critical"
 
