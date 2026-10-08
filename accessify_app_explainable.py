@@ -552,7 +552,7 @@ def scan_page(html_text):
             "WCAG 2.4.2 Page Titled",
         )
     # 8. Main landmark
-   if not soup.find("main"):
+    if not soup.find("main"):
         # ARIA main is also accepted.
         main_role = soup.find(
             attrs={"role": "main"}
