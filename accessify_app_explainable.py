@@ -20,12 +20,11 @@ st.markdown("""
     bottom: 8px;
     right: 12px;
     font-size: 100;
-    opacity: 1;
+    opacity: 0.12;
     z-index: 9999;
     pointer-events: none;
 }
 </style>
-
 <div class="mk-watermark">MK</div>
 """, unsafe_allow_html=True)
 st.markdown(
@@ -65,17 +64,13 @@ SEVERITY_WEIGHTS = {
 def load_accessguru_dataset(path):
     df = pd.read_csv(path, low_memory=False)
     # Normalize column names
-    df.columns = [
-        str(c).strip().replace("\ufeff", "")
-        for c in df.columns
-    ]
+    df.columns = [ str(c).strip().replace("\ufeff", "") for c in df.columns ]
     required = [
         "violationnumberID",
         "initialImpactScore",
         "Description",
         "AffectedHTMLElement(s)",
-        "category",
-    ]
+        "category"]
     missing = [c for c in required if c not in df.columns]
     if missing:
         raise ValueError(
@@ -152,7 +147,6 @@ def build_dataset_search_index(df):
     Separate TF-IDF index used to find the closest AccessGuru
     examples for a detected problem.
     """
-
     vectorizer = TfidfVectorizer(
         max_features=40000,
         ngram_range=(1, 2),
@@ -160,9 +154,7 @@ def build_dataset_search_index(df):
         sublinear_tf=True,
         strip_accents="unicode",
     )
-
     X = vectorizer.fit_transform(df["model_text"])
-
     return vectorizer, X
 # WEB FETCHING
 def normalize_url(url):
@@ -182,21 +174,17 @@ def fetch_page(url):
             "+https://example.com/accessibility)"
         )
     }
-
     response = requests.get(
         url,
         headers=headers,
         timeout=20,
         allow_redirects=True,
     )
-
     response.raise_for_status()
-
     content_type = response.headers.get(
         "content-type",
         "",
     ).lower()
-
     if "text/html" not in content_type and response.text.count("<") < 10:
         raise ValueError(
             "The URL did not return a normal HTML webpage."
@@ -209,7 +197,6 @@ def visible_text(element):
 def has_accessible_name(element, soup):
     """
     Practical accessible-name heuristic.
-
     It checks common sources:
       - visible text
       - aria-label
@@ -276,15 +263,11 @@ def _parse_css_color(value):
     if m:
         return tuple(int(m.group(i)) for i in (1,2,3))
     return None
-
-
 def _extract_style_color(style, property_name):
     if not style:
         return None
     m = re.search(rf'{re.escape(property_name)}\s*:\s*([^;]+)', style, re.I)
     return _parse_css_color(m.group(1)) if m else None
-
-
 def _specific_issue_details(issue):
     """Turn a generic rule finding into presentation-ready, concrete evidence."""
     raw = html.unescape(issue.get('element', ''))
@@ -295,7 +278,6 @@ def _specific_issue_details(issue):
     text = visible_text(el) if el else ''
     text = re.sub(r'\s+', ' ', text).strip()
     rule = issue.get('rule', '')
-
     details = {
         'detected_value': '',
         'why_it_matters': 'This can create a barrier for people using screen readers, keyboard navigation, magnification or other assistive technology.',
@@ -364,7 +346,6 @@ def _specific_issue_details(issue):
     issue.update(details)
     return issue
 
-
 def add_contrast_issues(soup, issues):
     """Detect low-contrast pairs when explicit inline colors are available."""
     seen = set()
@@ -392,8 +373,6 @@ def add_contrast_issues(soup, issues):
             'contrast_ratio': round(ratio, 2),
         }
         issues.append(_specific_issue_details(issue))
-
-
 def add_issue(
     issues,
     rule,
@@ -414,25 +393,13 @@ def add_issue(
         "category": category,
     }
     issues.append(_specific_issue_details(issue))
-
-
-# ============================================================
 # RULE-BASED ACCESSIBILITY SCANNER
-# ============================================================
-
 def scan_page(html_text):
     soup = BeautifulSoup(html_text, "lxml")
-
     issues = []
-
-    # --------------------------------------------------------
     # 1. Images
-    # --------------------------------------------------------
-
     for img in soup.find_all("img"):
-
         alt = img.get("alt")
-
         if alt is None:
             add_issue(
                 issues,
@@ -466,11 +433,7 @@ def scan_page(html_text):
                 img,
                 "WCAG 1.1.1 Non-text Content",
             )
-
-    # --------------------------------------------------------
     # 2. Input type=image
-    # --------------------------------------------------------
-
     for inp in soup.find_all(
         "input",
         attrs={"type": re.compile("^image$", re.I)},
@@ -485,15 +448,9 @@ def scan_page(html_text):
                 inp,
                 "WCAG 1.1.1 Non-text Content",
             )
-
-    # --------------------------------------------------------
     # 3. Buttons
-    # --------------------------------------------------------
-
     for button in soup.find_all("button"):
-
         if not has_accessible_name(button, soup):
-
             add_issue(
                 issues,
                 "button-name",
@@ -506,17 +463,10 @@ def scan_page(html_text):
                 button,
                 "WCAG 4.1.2 Name, Role, Value",
             )
-
-    # --------------------------------------------------------
     # 4. Links
-    # --------------------------------------------------------
-
     for link in soup.find_all("a"):
-
         href = link.get("href")
-
         if href is not None and not has_accessible_name(link, soup):
-
             add_issue(
                 issues,
                 "link-name",
@@ -529,21 +479,12 @@ def scan_page(html_text):
                 link,
                 "WCAG 2.4.4 Link Purpose",
             )
-
-    # --------------------------------------------------------
     # 5. Form controls
-    # --------------------------------------------------------
-
     form_controls = soup.find_all(
         ["input", "textarea", "select"]
     )
-
     for control in form_controls:
-
-        input_type = (
-            control.get("type", "").lower()
-        )
-
+        input_type = (control.get("type", "").lower())
         if input_type in [
             "hidden",
             "submit",
@@ -551,9 +492,7 @@ def scan_page(html_text):
             "reset",
         ]:
             continue
-
         if not has_accessible_name(control, soup):
-
             add_issue(
                 issues,
                 "label",
@@ -612,20 +551,13 @@ def scan_page(html_text):
             title if title else soup,
             "WCAG 2.4.2 Page Titled",
         )
-
-    # --------------------------------------------------------
     # 8. Main landmark
-    # --------------------------------------------------------
-
-    if not soup.find("main"):
-
+   if not soup.find("main"):
         # ARIA main is also accepted.
         main_role = soup.find(
             attrs={"role": "main"}
         )
-
         if not main_role:
-
             add_issue(
                 issues,
                 "landmark",
@@ -708,26 +640,15 @@ def scan_page(html_text):
                 video,
                 "WCAG 1.2.2 Captions",
             )
-
-    # --------------------------------------------------------
     # 12. Duplicate IDs
-    # --------------------------------------------------------
-
     ids = {}
-
     for element in soup.find_all(attrs={"id": True}):
-
         element_id = element.get("id")
-
         if not element_id:
             continue
-
         ids.setdefault(element_id, []).append(element)
-
     for duplicate_id, elements in ids.items():
-
         if len(elements) > 1:
-
             add_issue(
                 issues,
                 "duplicate-id",
@@ -759,14 +680,11 @@ def scan_page(html_text):
                 "iframe",
             ]
         )
-
         tabindex = hidden.get("tabindex")
-
         if focusable is not None or (
             tabindex is not None
             and tabindex not in ["-1", ""]
         ):
-
             add_issue(
                 issues,
                 "aria-hidden-focus",
@@ -779,22 +697,15 @@ def scan_page(html_text):
                 hidden,
                 "WCAG 4.1.2 Name, Role, Value",
             )
-
-    # --------------------------------------------------------
     # 14. Positive tabindex
-    # --------------------------------------------------------
-
     for element in soup.find_all(
         attrs={"tabindex": True}
     ):
-
         try:
             tabindex = int(element.get("tabindex"))
         except Exception:
             continue
-
         if tabindex > 0:
-
             add_issue(
                 issues,
                 "tabindex",
