@@ -1,39 +1,7 @@
-"""
-Accessify: automated accessibility engine — SDG 10 Web Accessibility Auditor
-------------------------------------------------
-One-file hackathon application.
-
-Dataset:
-    AccessGuru Original_full_data.csv
-
-Run:
-    pip install streamlit pandas numpy scikit-learn requests beautifulsoup4 lxml
-    streamlit run app.py
-
-Optional:
-    Put Original_full_data.csv in the same folder as this file.
-
-What it does:
-    1. Accepts a website URL.
-    2. Downloads its HTML.
-    3. Runs a practical accessibility scan.
-    4. Uses the AccessGuru dataset to learn violation-impact scores
-       and retrieve dataset-grounded recommendations.
-    5. Produces an interpretable 0-100 accessibility screening score.
-    6. Shows critical problems, WCAG-related guidance and code fixes.
-    7. Lets the user download a report.
-
-Important:
-    This is an automated screening tool, NOT a certification of WCAG
-    compliance. Real accessibility testing should include manual testing
-    and testing with assistive technologies/screen-reader users.
-"""
-
 import re
 import io
 import html
 from urllib.parse import urlparse
-
 import numpy as np
 import pandas as pd
 import requests
@@ -42,24 +10,14 @@ from bs4 import BeautifulSoup
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import Ridge
 from sklearn.metrics.pairwise import cosine_similarity
-
-
-# ============================================================
 # PAGE CONFIG
-# ============================================================
-
 st.set_page_config(
     page_title="Accessify",
     page_icon="🛠️",
     layout="wide",
     initial_sidebar_state="expanded",
 )
-
-
-# ============================================================
 # STYLING
-# ============================================================
-
 st.markdown(
     """
     <style>
@@ -78,20 +36,13 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-
-
-# ============================================================
 # CONSTANTS
-# ============================================================
-
 DATASET_NAME = "Original_full_data.csv"
-
 DEFAULT_DATASET_PATHS = [
     DATASET_NAME,
     "./data/Original_full_data.csv",
     "/mnt/data/Original_full_data.csv",
 ]
-
 SEVERITY_WEIGHTS = {
     5: 5.0,  # critical
     4: 4.0,  # serious
@@ -99,22 +50,15 @@ SEVERITY_WEIGHTS = {
     2: 2.0,  # minor
     1: 1.0,
 }
-
-
-# ============================================================
 # DATASET LOADING
-# ============================================================
-
 @st.cache_data(show_spinner=False)
 def load_accessguru_dataset(path):
     df = pd.read_csv(path, low_memory=False)
-
     # Normalize column names
     df.columns = [
         str(c).strip().replace("\ufeff", "")
         for c in df.columns
     ]
-
     required = [
         "violationnumberID",
         "initialImpactScore",
@@ -122,22 +66,17 @@ def load_accessguru_dataset(path):
         "AffectedHTMLElement(s)",
         "category",
     ]
-
     missing = [c for c in required if c not in df.columns]
-
     if missing:
         raise ValueError(
             "The AccessGuru CSV is missing expected columns: "
             + ", ".join(missing)
         )
-
     df["initialImpactScore"] = pd.to_numeric(
         df["initialImpactScore"],
         errors="coerce",
     )
-
     df = df.dropna(subset=["initialImpactScore"]).copy()
-
     # Build text used by the ML model
     text_columns = [
         "violationnumberID",
@@ -147,13 +86,10 @@ def load_accessguru_dataset(path):
         "LongDescription",
         "updated_Description",
     ]
-
     for col in text_columns:
         if col not in df.columns:
             df[col] = ""
-
         df[col] = df[col].fillna("").astype(str)
-
     df["model_text"] = (
         df["violationnumberID"]
         + " "
@@ -165,10 +101,7 @@ def load_accessguru_dataset(path):
         + " "
         + df["LongDescription"]
     )
-
     return df
-
-
 def find_dataset():
     for path in DEFAULT_DATASET_PATHS:
         try:
@@ -176,14 +109,8 @@ def find_dataset():
                 return path
         except Exception:
             pass
-
     return None
-
-
-# ============================================================
 # ML MODEL
-# ============================================================
-
 @st.cache_resource(show_spinner=False)
 def train_accessguru_model(df):
     """
@@ -197,7 +124,6 @@ def train_accessguru_model(df):
     AccessGuru corpus to retrieve the closest known violations and
     their fixes.
     """
-
     vectorizer = TfidfVectorizer(
         max_features=30000,
         ngram_range=(1, 2),
@@ -205,17 +131,11 @@ def train_accessguru_model(df):
         sublinear_tf=True,
         strip_accents="unicode",
     )
-
     X = vectorizer.fit_transform(df["model_text"])
-
     y = df["initialImpactScore"].astype(float).values
-
     model = Ridge(alpha=2.0)
     model.fit(X, y)
-
     return vectorizer, model
-
-
 @st.cache_resource(show_spinner=False)
 def build_dataset_search_index(df):
     """
@@ -234,29 +154,17 @@ def build_dataset_search_index(df):
     X = vectorizer.fit_transform(df["model_text"])
 
     return vectorizer, X
-
-
-# ============================================================
 # WEB FETCHING
-# ============================================================
-
 def normalize_url(url):
     url = url.strip()
-
     if not url:
         return None
-
     if not url.startswith(("http://", "https://")):
         url = "https://" + url
-
     parsed = urlparse(url)
-
     if not parsed.netloc:
         return None
-
     return url
-
-
 def fetch_page(url):
     headers = {
         "User-Agent": (
@@ -285,16 +193,9 @@ def fetch_page(url):
         )
 
     return response.text, response.url
-
-
-# ============================================================
 # ACCESSIBILITY HELPERS
-# ============================================================
-
 def visible_text(element):
     return element.get_text(" ", strip=True)
-
-
 def has_accessible_name(element, soup):
     """
     Practical accessible-name heuristic.
@@ -307,45 +208,31 @@ def has_accessible_name(element, soup):
       - alt
       - associated label
     """
-
     if element.get("aria-label", "").strip():
         return True
-
     labelledby = element.get("aria-labelledby", "").strip()
-
     if labelledby:
         ids = labelledby.split()
         if any(soup.find(id=i) for i in ids):
             return True
-
     if element.get("title", "").strip():
         return True
-
     if element.get("alt", "").strip():
         return True
-
     if visible_text(element):
         return True
-
     element_id = element.get("id")
-
     if element_id:
         label = soup.find(
             "label",
             attrs={"for": element_id},
         )
-
         if label and visible_text(label):
             return True
-
     parent_label = element.find_parent("label")
-
     if parent_label and visible_text(parent_label):
         return True
-
     return False
-
-
 def _contrast_ratio(foreground, background):
     """Return WCAG contrast ratio for two RGB colors."""
     def lum(rgb):
@@ -356,8 +243,6 @@ def _contrast_ratio(foreground, background):
         return 0.2126 * vals[0] + 0.7152 * vals[1] + 0.0722 * vals[2]
     a, b = lum(foreground), lum(background)
     return (max(a, b) + 0.05) / (min(a, b) + 0.05)
-
-
 def _parse_css_color(value):
     """Parse common CSS hex/rgb/named colors used in inline styles."""
     if not value:
