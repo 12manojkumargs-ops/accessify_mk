@@ -11,12 +11,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import Ridge
 from sklearn.metrics.pairwise import cosine_similarity
 # PAGE CONFIG
-st.set_page_config(
-    page_title="Accessify",
-    page_icon="🛠️",
-    layout="wide",
-    initial_sidebar_state="expanded",
-)
+st.set_page_config( page_title="Accessify", page_icon="🛠️",layout="wide",initial_sidebar_state="expanded")
 # STYLING
 st.markdown(
     """
