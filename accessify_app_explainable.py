@@ -50,7 +50,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 st.set_page_config(
     page_title="Accessify",
-    page_icon="♿",
+    page_icon="🛠️",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -1423,7 +1423,7 @@ def make_report(url, score, issues, features):
 
 st.markdown(
     '<div class="hero">'
-    '<div class="brand">♿ ACCESSIFY</div>'
+    '<div class="brand">🛠️ ACCESSIFY</div>'
     '<div class="project-name">Automated accessibility engine</div>'
     '<div class="hero-desc">An Automated Auditing tool that instantly scans digital environments to detect critical accessibility flaws, such as missing structural tags and poor visual contrast and helps the visually impaired to access the internet better.</div>'
     '</div>',
@@ -1447,7 +1447,7 @@ st.markdown(
 
 with st.sidebar:
 
-    st.header("♿ Accessify")
+    st.header("🛠️ Accessify")
 
     st.write(
         """
