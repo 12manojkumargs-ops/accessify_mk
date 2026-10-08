@@ -1820,15 +1820,12 @@ if "analysis" in st.session_state:
                     st.markdown(
                         f"**Category:** {issue['category']}"
                     )
-
                     st.markdown(
                         f"**ML-predicted impact:** "
                         f"`{impact:.2f}/5`"
                     )
-
                     if issue.get(
-                        "dataset_rule"
-                    ):
+                        "dataset_rule" ):
 
                         st.markdown(
                             "**Closest AccessGuru violation:** "
