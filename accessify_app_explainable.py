@@ -19,8 +19,8 @@ st.markdown("""
     position: fixed;
     bottom: 8px;
     right: 12px;
-    font-size: 50;
-    opacity: 0.05;
+    font-size: 75;
+    opacity: 0.09;
     z-index: 9999;
     pointer-events: none;
 }
