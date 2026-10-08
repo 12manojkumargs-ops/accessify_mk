@@ -1421,7 +1421,7 @@ except Exception as e:
 # ============================================================
 
 with st.expander(
-    "📊 Dataset used by the AI",
+    "📊 Dataset Used",
     expanded=False,
 ):
 
