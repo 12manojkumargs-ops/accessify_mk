@@ -19,7 +19,7 @@ st.markdown("""
     position: fixed;
     bottom: 8px;
     right: 12px;
-    font-size: 10px;
+    font-size: 100px;
     opacity: 0.90;
     z-index: 9999;
     pointer-events: none;
