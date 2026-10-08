@@ -13,6 +13,21 @@ from sklearn.metrics.pairwise import cosine_similarity
 # PAGE CONFIG
 st.set_page_config( page_title="Accessify", page_icon="🛠️",layout="wide",initial_sidebar_state="expanded")
 # STYLING
+st.markdown("""
+<style>
+.mk-watermark {
+    position: fixed;
+    bottom: 8px;
+    right: 12px;
+    font-size: 10px;
+    opacity: 0.12;
+    z-index: 9999;
+    pointer-events: none;
+}
+</style>
+
+<div class="mk-watermark">MK</div>
+""", unsafe_allow_html=True)
 st.markdown(
     """
     <style>
