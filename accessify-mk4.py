@@ -142,6 +142,43 @@ st.markdown(
       [data-testid="stMetric"] { background:linear-gradient(135deg,rgba(20,34,57,.95),rgba(13,26,46,.88));border-color:rgba(120,170,230,.25); }
       div[data-testid="stExpander"] { background:rgba(16,35,62,.35); }
     }
+
+    /* ACCESSIFY: Red Bull Racing-inspired midnight / cyan / teal / ultramarine palette */
+    :root { --af-navy:#06101f; --af-blue:#1769ff; --af-ultra:#4338ca; --af-cyan:#32d7ff; --af-teal:#25e0c1; --af-red:#e10600; }
+    [data-testid="stAppViewContainer"] { background:radial-gradient(ellipse at 5% 3%,rgba(23,105,255,.13),transparent 34%),radial-gradient(ellipse at 96% 7%,rgba(37,224,193,.08),transparent 27%),radial-gradient(ellipse at 78% 40%,rgba(225,6,0,.035),transparent 25%); }
+    .hero { background:linear-gradient(112deg,#050b16 0%,#071b37 32%,#123c86 60%,#087eaa 83%,#0b9b91 100%); border:1px solid rgba(76,213,255,.38); box-shadow:0 22px 60px rgba(0,29,78,.24),0 0 28px rgba(23,105,255,.08),inset 0 1px 0 rgba(255,255,255,.15); animation:hero-arrive .75s cubic-bezier(.2,.8,.2,1) both; }
+    .hero:before { background:radial-gradient(circle,rgba(50,215,255,.35),rgba(37,224,193,.14) 38%,transparent 70%); }
+    .hero:after { border-color:rgba(50,215,255,.24); box-shadow:0 0 0 24px rgba(50,215,255,.025),0 0 0 48px rgba(37,224,193,.018); }
+    .brand-mark { color:#48e3ff; text-shadow:0 0 24px rgba(50,215,255,.24); }
+    .hero-topline { border-color:rgba(50,215,255,.28); background:linear-gradient(100deg,rgba(23,105,255,.15),rgba(37,224,193,.09)); }
+    .hero-pill { border-color:rgba(99,218,255,.23); background:linear-gradient(120deg,rgba(23,105,255,.13),rgba(37,224,193,.06)); }
+    .hero-float { border-color:rgba(50,215,255,.42); background:linear-gradient(145deg,rgba(5,17,37,.84),rgba(9,49,83,.68)); box-shadow:0 15px 38px rgba(0,0,0,.22),0 0 24px rgba(50,215,255,.08),inset 0 1px 0 rgba(255,255,255,.12); }
+    .hero-float-label { color:#68e8ef; }
+    .scan-intro { margin:1.25rem 0 .75rem; animation:hero-arrive .85s .08s both; }
+    .scan-kicker { display:flex;align-items:center;gap:.55rem;color:#0c9db7;font-size:.74rem;font-weight:900;letter-spacing:.16em;margin-bottom:.55rem; }
+    .scan-kicker-dot { width:8px;height:8px;border-radius:50%;background:#25e0c1;box-shadow:0 0 0 4px rgba(37,224,193,.13),0 0 14px rgba(37,224,193,.7); }
+    .scan-title { font-family:'Space Grotesk','DM Sans',sans-serif;font-size:clamp(1.55rem,3.1vw,2.25rem);line-height:1.12;font-weight:800;letter-spacing:-.055em; }
+    .scan-title span { background:linear-gradient(95deg,#1769ff 0%,#06a6d5 45%,#14b8a6 80%,#e10600 130%);-webkit-background-clip:text;background-clip:text;color:transparent; }
+    .scan-copy { max-width:780px;font-size:.98rem;line-height:1.65;opacity:.76;margin-top:.55rem; }
+    [class*="st-key-scan_input_panel"] { position:relative; overflow:hidden; margin:.7rem 0 .2rem; padding:1.05rem 1.1rem .85rem; border:1px solid rgba(50,165,225,.34); border-radius:20px; background:linear-gradient(120deg,rgba(23,105,255,.055),rgba(50,215,255,.065) 48%,rgba(37,224,193,.045)); box-shadow:0 12px 34px rgba(13,67,135,.07),inset 0 1px 0 rgba(255,255,255,.48); transition:border-color .25s ease,box-shadow .25s ease,transform .25s ease; animation:panel-arrive .7s .14s both; }
+    [class*="st-key-scan_input_panel"]:hover { border-color:rgba(50,215,255,.65);box-shadow:0 16px 38px rgba(23,105,255,.10),0 0 24px rgba(50,215,255,.055);transform:translateY(-1px); }
+    [class*="st-key-scan_input_panel"] [data-testid="stTextInput"] input { min-height:3.45rem!important;border-radius:13px!important;border:1px solid rgba(54,151,211,.45)!important;background:rgba(255,255,255,.88)!important;color:#071225!important;font-size:1.02rem!important;box-shadow:inset 0 1px 3px rgba(5,30,65,.04); }
+    [class*="st-key-scan_input_panel"] [data-testid="stTextInput"] input:focus { border-color:#18bde7!important;box-shadow:0 0 0 3px rgba(50,215,255,.15),0 0 20px rgba(50,215,255,.12)!important; }
+    [class*="st-key-scan_input_panel"] [data-testid="stFormSubmitButton"] button { min-height:3.15rem!important;border-radius:13px!important;color:#fff!important;border:1px solid rgba(84,220,255,.55)!important;background:linear-gradient(105deg,#0b3eaa 0%,#1769ff 38%,#079fca 72%,#0eaa98 100%)!important;box-shadow:0 8px 22px rgba(23,105,255,.2),inset 0 1px 0 rgba(255,255,255,.18)!important;transition:transform .2s ease,filter .2s ease,box-shadow .2s ease!important; }
+    [class*="st-key-scan_input_panel"] [data-testid="stFormSubmitButton"] button:hover { transform:translateY(-2px);filter:brightness(1.08);box-shadow:0 12px 28px rgba(23,105,255,.25),0 0 18px rgba(50,215,255,.12)!important; }
+    .enter-hint { height:3.1rem;display:flex;flex-direction:column;justify-content:center;text-align:center;font-size:.7rem;font-weight:900;letter-spacing:.09em;opacity:.62;line-height:1.6; }
+    .enter-hint span { font-weight:500;letter-spacing:0;font-size:.76rem; }
+    .scan-footnote { margin:.25rem 0 1rem;font-size:.78rem;opacity:.63;letter-spacing:.01em; }
+    .scan-footnote span { color:#0ca9c6;font-weight:900; }
+    @keyframes hero-arrive { from { opacity:0;transform:translateY(12px) } to { opacity:1;transform:translateY(0) } }
+    @keyframes panel-arrive { from { opacity:0;transform:translateY(9px) } to { opacity:1;transform:translateY(0) } }
+    @media(prefers-color-scheme:dark) {
+      [class*="st-key-scan_input_panel"] { background:linear-gradient(120deg,rgba(23,105,255,.13),rgba(50,215,255,.07) 48%,rgba(37,224,193,.06));box-shadow:0 12px 34px rgba(0,0,0,.14),inset 0 1px 0 rgba(255,255,255,.04); }
+      .scan-kicker { color:#61dff0; }
+      [class*="st-key-scan_input_panel"] [data-testid="stTextInput"] input { background:rgba(6,18,36,.9)!important;color:#f2f8ff!important;border-color:rgba(50,215,255,.35)!important; }
+    }
+    @media(max-width:650px) { [class*="st-key-scan_input_panel"] { padding:.8rem .75rem .6rem; } .scan-copy { font-size:.91rem; } }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important; } }
     </style>
     """,
     unsafe_allow_html=True,
@@ -1608,6 +1645,41 @@ st.markdown(
 )
 
 
+# ============================================================
+# FIRST-SCREEN URL SCAN PANEL
+# ============================================================
+
+st.markdown(
+    '<section class="scan-intro">'
+    '<div class="scan-kicker"><span class="scan-kicker-dot"></span> READY WHEN YOU ARE</div>'
+    '<div class="scan-title">Give your website an <span>accessibility check.</span></div>'
+    '<div class="scan-copy">Paste a public URL. Accessify will inspect the page, identify potential barriers, and turn findings into practical next steps.</div>'
+    '</section>',
+    unsafe_allow_html=True,
+)
+
+with st.container(key="scan_input_panel"):
+    with st.form("accessify_scan_form", clear_on_submit=False):
+        url_input = st.text_input(
+            "Website URL",
+            placeholder="https://your-website.com",
+            label_visibility="collapsed",
+        )
+        form_cols = st.columns([3, 1])
+        with form_cols[0]:
+            analyze = st.form_submit_button(
+                "✦  Analyze website",
+                type="primary",
+                use_container_width=True,
+            )
+        with form_cols[1]:
+            st.markdown('<div class="enter-hint">PRESS ENTER ↵<br><span>or click Analyze</span></div>', unsafe_allow_html=True)
+
+st.markdown(
+    '<div class="scan-footnote"><span>◈</span> Public websites only &nbsp;·&nbsp; WCAG-oriented checks &nbsp;·&nbsp; Dataset-assisted insights</div>',
+    unsafe_allow_html=True,
+)
+
 # Official WCAG reference
 st.markdown(
     '<div style="margin:-0.5rem 0 1rem 0;">'
@@ -1616,6 +1688,8 @@ st.markdown(
     '</a></div>',
     unsafe_allow_html=True,
 )
+
+
 
 
 # ============================================================
@@ -1763,31 +1837,6 @@ with st.expander(
         "The uploaded AccessGuru dataset is actively used by the ML layer: "
         "Accessify trains a TF-IDF + Ridge impact model and performs semantic retrieval against real-world accessibility violation records."
     )
-
-
-# ============================================================
-# URL INPUT
-# ============================================================
-
-st.markdown(
-    '<div style="display:flex;align-items:center;gap:.8rem;margin:.5rem 0 .2rem 0;">'
-    '<div style="width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#0759df,#13a8df);box-shadow:0 8px 20px rgba(0,103,230,.22);font-size:1.25rem;">⌕</div>'
-    '<div><div style="font-size:1.55rem;font-weight:850;letter-spacing:-.04em;">Start your accessibility scan</div>'
-    '<div style="font-size:.93rem;opacity:.72;margin-top:.1rem;">Enter a public website URL to discover barriers and get actionable insights.</div></div></div>',
-    unsafe_allow_html=True,
-)
-
-url_input = st.text_input(
-    "Website URL",
-    placeholder="https://example.com",
-    label_visibility="collapsed",
-)
-
-analyze = st.button(
-    "🚀 Analyze Website",
-    type="primary",
-    use_container_width=True,
-)
 
 
 # ============================================================
