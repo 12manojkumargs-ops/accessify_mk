@@ -1,5 +1,5 @@
 """
-Accessify: automated accessibility engine — SDG 10 Web Accessibility Auditor
+Accessify: automated web accessibility auditor
 ------------------------------------------------
 One-file hackathon application.
 
@@ -50,7 +50,7 @@ from sklearn.tree import DecisionTreeClassifier
 # ============================================================
 
 st.set_page_config(
-    page_title="Accessify | SDG 10",
+    page_title="Accessify | Web Accessibility",
     page_icon="♿",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -179,6 +179,57 @@ st.markdown(
     }
     @media(max-width:650px) { [class*="st-key-scan_input_panel"] { padding:.8rem .75rem .6rem; } .scan-copy { font-size:.91rem; } }
     @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important; } }
+
+
+    /* NEON CYBER FINISH — restrained motion, racing red + cyan + ultramarine + gold */
+    :root { --af-red:#e10600; --af-gold:#f6bd16; --af-cyan:#32d7ff; --af-teal:#25e0c1; --af-ultra:#4338ca; }
+    .hero { background:linear-gradient(112deg,#050914 0%,#091a38 27%,#173d91 52%,#087eaa 75%,#087c72 100%); }
+    .hero:before { background:radial-gradient(circle,rgba(50,215,255,.34),rgba(67,56,202,.20) 42%,rgba(225,6,0,.10) 60%,transparent 72%); animation:af-pulse 6.2s ease-in-out infinite, af-hue 12s linear infinite; }
+    .hero:after { border-color:rgba(246,189,22,.24); box-shadow:0 0 0 24px rgba(50,215,255,.035),0 0 0 48px rgba(246,189,22,.025),0 0 0 72px rgba(225,6,0,.018); animation:orbit-breathe 8s ease-in-out infinite; }
+    .brand-mark { background:linear-gradient(95deg,#32d7ff,#25e0c1 42%,#f6bd16 76%,#ff594d);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none; }
+    .hero-topline { box-shadow:0 0 22px rgba(50,215,255,.08); }
+    .hero-pill { transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease,background .22s ease; }
+    .hero-pill:hover { transform:translateY(-3px);border-color:rgba(246,189,22,.65);box-shadow:0 8px 24px rgba(50,215,255,.12),0 0 12px rgba(246,189,22,.08); }
+    .hero-float { animation:af-float 5s ease-in-out infinite, float-glow 4.5s ease-in-out infinite; }
+    .scan-title span { background:linear-gradient(95deg,#1769ff 0%,#32d7ff 33%,#25e0c1 58%,#f6bd16 80%,#e10600 110%);background-size:220% auto;animation:gradient-drift 7s linear infinite;-webkit-background-clip:text;background-clip:text;color:transparent; }
+    [class*="st-key-scan_input_panel"] { background:linear-gradient(125deg,rgba(23,105,255,.075),rgba(50,215,255,.075) 38%,rgba(37,224,193,.055) 66%,rgba(225,6,0,.035)); }
+    [class*="st-key-scan_input_panel"]:before { content:"";pointer-events:none;position:absolute;inset:0;border-radius:inherit;background:linear-gradient(115deg,transparent 15%,rgba(50,215,255,.07) 42%,transparent 64%);background-size:220% 100%;animation:panel-sheen 8s ease-in-out infinite; }
+    [class*="st-key-scan_input_panel"] [data-testid="stFormSubmitButton"] button { background:linear-gradient(105deg,#092c84 0%,#1769ff 30%,#079fca 58%,#0eaa98 78%,#d43b28 115%)!important;background-size:180% 100%!important; }
+    [class*="st-key-scan_input_panel"] [data-testid="stFormSubmitButton"] button:hover { background-position:100% 0!important;box-shadow:0 12px 28px rgba(23,105,255,.25),0 0 22px rgba(50,215,255,.18),0 0 12px rgba(225,6,0,.10)!important; }
+    [data-testid="stMetric"] { position:relative;overflow:hidden;transition:transform .24s ease,border-color .24s ease,box-shadow .24s ease!important; }
+    [data-testid="stMetric"]:after { content:"";position:absolute;left:-110%;top:0;width:70%;height:2px;background:linear-gradient(90deg,transparent,#32d7ff,#f6bd16,transparent);transition:left .55s ease; }
+    [data-testid="stMetric"]:hover:after { left:130%; }
+    [data-testid="stMetric"]:hover { transform:translateY(-5px) scale(1.008)!important;border-color:rgba(50,215,255,.48)!important;box-shadow:0 14px 32px rgba(23,105,255,.12),0 0 18px rgba(50,215,255,.055)!important; }
+    .issue-card:hover,.deduction-card:hover { border-color:rgba(50,215,255,.55);box-shadow:0 10px 25px rgba(23,105,255,.10),0 0 15px rgba(50,215,255,.055); }
+    .feature-title { background:linear-gradient(105deg,#071b44,#123c86 55%,#087eaa);border-left-color:#e10600;box-shadow:0 7px 22px rgba(23,105,255,.16),0 0 15px rgba(50,215,255,.045); }
+    .error-badge { box-shadow:0 5px 18px rgba(225,6,0,.22),0 0 14px rgba(225,6,0,.09); }
+    .risk-panel { background:linear-gradient(115deg,rgba(23,105,255,.055),rgba(50,215,255,.035),rgba(225,6,0,.025)); }
+    @keyframes orbit-breathe { 0%,100%{transform:scale(1) rotate(0deg);opacity:.7}50%{transform:scale(1.04) rotate(8deg);opacity:1} }
+    @keyframes float-glow { 0%,100%{box-shadow:0 15px 38px rgba(0,0,0,.22),0 0 15px rgba(50,215,255,.06),inset 0 1px 0 rgba(255,255,255,.12)}50%{box-shadow:0 18px 42px rgba(0,0,0,.25),0 0 25px rgba(50,215,255,.15),0 0 12px rgba(246,189,22,.05),inset 0 1px 0 rgba(255,255,255,.15)} }
+    @keyframes gradient-drift { 0%{background-position:0% 50%}100%{background-position:220% 50%} }
+    @keyframes panel-sheen { 0%,65%,100%{background-position:180% 0}35%{background-position:-20% 0} }
+    @keyframes af-hue { 0%,100%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(18deg)} }
+
+    /* Streamlit's own theme selector is more reliable than OS theme preference. */
+    [data-testid="stAppViewContainer"][data-theme="light"], [data-theme="light"] [data-testid="stAppViewContainer"] {
+      color:#111827;
+      background:radial-gradient(ellipse at 5% 3%,rgba(23,105,255,.075),transparent 34%),radial-gradient(ellipse at 96% 7%,rgba(37,224,193,.055),transparent 27%),#f5f8ff;
+    }
+    [data-testid="stAppViewContainer"][data-theme="light"] [data-testid="stMetric"], [data-theme="light"] [data-testid="stMetric"] { background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(235,244,255,.92))!important;color:#111827!important;border-color:rgba(23,105,255,.20)!important; }
+    [data-theme="light"] .feature-desc,[data-theme="light"] .scan-copy,[data-theme="light"] .scan-footnote { color:#344256!important;opacity:1!important; }
+    [data-theme="light"] .deduction-card,[data-theme="light"] .issue-card { background:rgba(255,255,255,.84)!important;color:#111827!important;border-color:rgba(70,95,130,.22)!important; }
+    [data-theme="light"] div[data-testid="stExpander"] { background:rgba(255,255,255,.88)!important;color:#111827!important;border-color:rgba(70,95,130,.20)!important; }
+    [data-theme="light"] [data-testid="stSidebar"] { background:#eef4ff!important;color:#111827!important; }
+    [data-theme="light"] [class*="st-key-scan_input_panel"] { background:linear-gradient(120deg,rgba(23,105,255,.075),rgba(50,215,255,.09) 48%,rgba(37,224,193,.06));border-color:rgba(23,105,255,.24); }
+    [data-theme="light"] [class*="st-key-scan_input_panel"] [data-testid="stTextInput"] input { background:#fff!important;color:#071225!important;border-color:rgba(23,105,255,.34)!important; }
+    [data-theme="dark"] [data-testid="stAppViewContainer"] { background:radial-gradient(ellipse at 5% 3%,rgba(23,105,255,.14),transparent 34%),radial-gradient(ellipse at 96% 7%,rgba(37,224,193,.08),transparent 27%),#07101e; }
+    [data-theme="dark"] [data-testid="stMetric"] { background:linear-gradient(135deg,rgba(16,31,54,.97),rgba(9,22,41,.94))!important;color:#f2f7ff!important;border-color:rgba(50,215,255,.20)!important; }
+    [data-theme="dark"] .deduction-card,[data-theme="dark"] .issue-card { background:rgba(12,28,49,.76)!important;color:#f2f7ff!important;border-color:rgba(105,155,210,.25)!important; }
+    [data-theme="dark"] div[data-testid="stExpander"] { background:rgba(10,25,45,.7)!important;color:#f2f7ff!important;border-color:rgba(50,215,255,.18)!important; }
+    [data-theme="dark"] [data-testid="stSidebar"] { background:#081426!important;color:#f2f7ff!important; }
+    [data-theme="dark"] .feature-desc,[data-theme="dark"] .scan-copy,[data-theme="dark"] .scan-footnote { color:#c3d2e8!important;opacity:1!important; }
+    @media (hover:none) { .hero-pill:hover,[data-testid="stMetric"]:hover,.issue-card:hover,.deduction-card:hover { transform:none!important; } }
+
     </style>
     """,
     unsafe_allow_html=True,
@@ -1628,6 +1679,45 @@ def make_report(url, score, issues, features):
     return "\n".join(lines)
 
 
+def find_source_line_for_issue(issue, source_html):
+    """Best-effort source line lookup for the offending HTML element."""
+    try:
+        fragment = BeautifulSoup(str(issue.get("element", "")), "html.parser").find()
+    except Exception:
+        fragment = None
+    if fragment is None:
+        return None, ""
+
+    tag_name = str(fragment.name or "").lower()
+    attrs = fragment.attrs or {}
+    lines = str(source_html or "").splitlines()
+    if not lines:
+        return None, ""
+
+    # Prioritise unique attributes to avoid matching the wrong repeated tag.
+    keys = ["id", "name", "src", "href", "for", "aria-label", "alt", "type", "role"]
+    needles = []
+    for key in keys:
+        value = attrs.get(key)
+        if isinstance(value, list):
+            value = " ".join(str(v) for v in value)
+        if value is not None and str(value).strip():
+            escaped = html.escape(str(value), quote=True)
+            needles.append((key.lower(), str(value).strip(), escaped))
+    for idx, line in enumerate(lines, start=1):
+        low = line.lower()
+        if tag_name and f"<{tag_name}" not in low:
+            continue
+        for key, value, escaped in needles:
+            if re.search(r"\b" + re.escape(key) + r"\s*=\s*(['\"])" + re.escape(value) + r"\1", line, re.I) or escaped.lower() in low:
+                return idx, line.strip()[:260]
+    # Fallback: locate the first line containing this tag name.
+    for idx, line in enumerate(lines, start=1):
+        if tag_name and re.search(r"<\s*" + re.escape(tag_name) + r"\b", line, re.I):
+            return idx, line.strip()[:260]
+    return None, ""
+
+
 # ============================================================
 # UI HEADER
 # ============================================================
@@ -1637,9 +1727,9 @@ st.markdown(
     '<div class="hero-topline"><span class="hero-dot"></span> AI-ASSISTED WEB ACCESSIBILITY</div>'
     '<div class="brand">♿ ACCESS<span class="brand-mark">IFY</span></div>'
     '<div class="project-name">Make every click count. Make the web work for everyone.</div>'
-    '<div class="hero-desc">Scan a website for accessibility barriers, understand why they matter, and get practical recommendations grounded in accessibility rules and dataset evidence.</div>'
+    '<div class="hero-desc">An automated auditing tool that scans websites for accessibility flaws—such as missing structural tags, unclear controls, and poor visual contrast—and gives developers practical ways to improve the experience for everyone.</div>'
     '<div class="hero-pills"><span class="hero-pill">✦ Smart issue detection</span><span class="hero-pill">◈ WCAG-oriented checks</span><span class="hero-pill">⌁ Explainable risk insights</span></div>'
-    '<div class="hero-float"><div class="hero-float-label">Built for inclusion</div><div class="hero-float-number">Access for all.</div><div class="hero-float-sub">Technology with social impact · SDG 10</div></div>'
+    '<div class="hero-float"><div class="hero-float-label">Built for inclusion</div><div class="hero-float-number">Access for all.</div><div class="hero-float-sub">Better access. Better experiences.</div></div>'
     '</div>',
     unsafe_allow_html=True,
 )
@@ -1718,7 +1808,7 @@ with st.sidebar:
           <a href="#developer-recommendations">🛠 Developer Recommendations</a>
           <a href="#junk-alt-text">🖼️ Image Alt-Text Check</a>
           <a href="#risk-predictor">🚦 Accessibility Risk</a>
-          <a href="#explainable-ai">📊 What Influences Risk?</a>
+          <a href="#explainable-ai">📊 Code-Line Error Likelihood</a>
         </div>
         """,
         unsafe_allow_html=True,
@@ -2455,8 +2545,7 @@ background: #fff;""",
         )
 
     st.caption(
-        "Accessify • SDG 10: Reduced Inequalities • "
-        "Automated accessibility screening"
+        "Accessify • Automated web accessibility screening"
     )
 
     # ========================================================
@@ -2570,8 +2659,52 @@ background: #fff;""",
         "observed issue counts and should be interpreted as a screening aid, not a certified risk score."
     )
 
-    st.markdown('<div id="explainable-ai" class="feature-title">📊 What Influences the Prediction?</div>', unsafe_allow_html=True)
-    st.markdown('<div class="feature-desc">Shows which patterns the trained model used most when judging example issues.</div>', unsafe_allow_html=True)
+    st.markdown('<div id="explainable-ai" class="feature-title">🧬 Accessibility Code-Line Error Likelihood</div>', unsafe_allow_html=True)
+    st.markdown('<div class="feature-desc">Ranks the source lines connected to detected accessibility findings, so developers can see where to investigate first.</div>', unsafe_allow_html=True)
+    source_html_for_lines = result.get("page_html", "")
+    line_findings = []
+    for issue in issues:
+        line_number, source_fragment = find_source_line_for_issue(issue, source_html_for_lines)
+        severity_value = float(issue.get("ml_impact", issue.get("severity", 1)))
+        # This is a transparent heuristic indicator, not a calibrated statistical probability.
+        likelihood = min(96, max(52, int(round(48 + severity_value * 9))))
+        line_findings.append({
+            "Source line": line_number if line_number is not None else "Not resolved",
+            "Estimated issue likelihood": f"{likelihood}%",
+            "Detected accessibility error": issue.get("title", issue.get("rule", "Accessibility issue")),
+            "Severity": round(severity_value, 2),
+            "HTML snippet": source_fragment or str(issue.get("element", ""))[:260],
+            "Why flagged": issue.get("description", "Rule-based accessibility finding"),
+        })
+
+    if line_findings:
+        line_df = pd.DataFrame(line_findings)
+        line_df["_sort_line"] = pd.to_numeric(line_df["Source line"], errors="coerce").fillna(999999)
+        line_df["_sort_likelihood"] = line_df["Estimated issue likelihood"].str.rstrip("%").astype(float)
+        line_df = line_df.sort_values(["_sort_likelihood", "_sort_line"], ascending=[False, True])
+        st.markdown(
+            '<div class="risk-panel"><strong>⚠️ Highest-priority code locations</strong><br>'
+            '<span>Higher percentages indicate stronger rule/severity evidence in this scan. They are heuristic priority estimates—not validated probabilities that a developer made a mistake.</span></div>',
+            unsafe_allow_html=True,
+        )
+        top = line_df.iloc[0]
+        top_cols = st.columns([1, 1, 2])
+        top_cols[0].metric("Top estimated likelihood", top["Estimated issue likelihood"])
+        top_cols[1].metric("Source line", str(top["Source line"]))
+        top_cols[2].metric("Finding", str(top["Detected accessibility error"])[:60])
+        display_df = line_df.drop(columns=["_sort_line", "_sort_likelihood"])
+        st.dataframe(display_df, use_container_width=True, hide_index=True, height=min(440, 100 + 54 * len(display_df)))
+        with st.expander("How should I interpret these percentages?"):
+            st.write(
+                "The scanner first detects a specific accessibility rule failure. The percentage is a transparent severity-based priority indicator (based on the existing impact estimate), not a calibrated probability or a claim about the developer. "
+                "Line numbers are best-effort matches against the HTML returned by the website; minified HTML, scripts that generate content, or repeated identical tags can make a line ambiguous."
+            )
+        st.caption("Note: a website URL usually exposes rendered HTML, not the developer's original project files. These are lines in the fetched HTML response where possible, not necessarily lines in the source repository.")
+    else:
+        st.success("No accessibility findings were available to rank. Run a scan with a page that returns readable HTML first.")
+
+    st.markdown("#### Model signals behind the risk estimate")
+    st.caption("These are the input patterns the Decision Tree used most often; they complement the line-level findings above.")
     importance_df = pd.DataFrame({
         "Input feature": RISK_FEATURE_NAMES,
         "Feature importance": risk_model.feature_importances_,
@@ -2586,3 +2719,4 @@ background: #fff;""",
         )
     else:
         st.info("The model did not assign a non-zero importance to any displayed feature for this trained tree.")
+
