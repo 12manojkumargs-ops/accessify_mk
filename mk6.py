@@ -2115,7 +2115,7 @@ with st.sidebar:
 
     st.divider()
 
-    st.subheader("Jump to a feature")
+    st.subheader("🍀Jump to a feature")
     st.markdown(
         """
         <div class="side-nav">
