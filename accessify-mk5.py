@@ -415,6 +415,201 @@ st.markdown(
       .stMarkdown h1.af-text-active,.stMarkdown h2.af-text-active,.stMarkdown h3.af-text-active { filter:none!important;text-shadow:none!important; }
     }
 
+
+
+    /* V6 — contrast hardening for the tiny bits people usually miss */
+    :root {
+      --af-light-ink:#17243a;
+      --af-light-muted:#42536b;
+      --af-dark-ink:#f3f7ff;
+      --af-dark-muted:#c4d2e6;
+    }
+    /* Default: strong readable copy, avoid low-opacity text disappearing. */
+    .small-muted,.scan-footnote,.feature-desc,[data-testid="stCaptionContainer"],
+    [data-testid="stMarkdownContainer"] small,.stCaption,
+    [data-testid="stWidgetLabel"] p,[data-testid="stMarkdownContainer"] p {
+      text-wrap:pretty;
+    }
+    .small-muted { opacity:1!important; }
+    [data-testid="stAlert"] { border-width:1px!important; }
+    [data-testid="stAlert"] p,[data-testid="stAlert"] li { opacity:1!important; }
+    [data-testid="stCodeBlock"] pre,[data-testid="stCode"] { border-radius:10px!important; }
+    [data-testid="stExpander"] summary,[data-testid="stExpander"] summary p { font-weight:650!important; }
+    [data-testid="stTabs"] button { font-weight:750!important; }
+    [data-testid="stWidgetLabel"] p { font-weight:650!important; }
+    [data-testid="stSelectbox"] [data-baseweb="select"] > div,
+    [data-testid="stMultiSelect"] [data-baseweb="select"] > div { border-width:1px!important; }
+    [data-testid="stDataFrame"] { isolation:isolate; }
+    [data-testid="stDataFrame"] canvas { outline-color:transparent; }
+    [data-testid="stDataFrame"] [role="grid"] { font-size:13px!important; }
+    [data-testid="stDataFrame"] [role="columnheader"] { font-weight:800!important; }
+    .feature-title { text-shadow:0 0 12px rgba(50,215,255,.18); }
+
+    /* Light mode: use explicit dark foregrounds on every small text/control surface. */
+    html[data-theme="light"], body[data-theme="light"], [data-theme="light"] {
+      --text-color:#17243a;
+      --secondary-text-color:#42536b;
+    }
+    html[data-theme="light"] [data-testid="stAppViewContainer"],
+    body[data-theme="light"] [data-testid="stAppViewContainer"],
+    [data-theme="light"] [data-testid="stAppViewContainer"] {
+      color:#17243a!important;
+    }
+    [data-theme="light"] [data-testid="stMarkdownContainer"],
+    [data-theme="light"] [data-testid="stMarkdownContainer"] p,
+    [data-theme="light"] [data-testid="stMarkdownContainer"] li,
+    [data-theme="light"] [data-testid="stMarkdownContainer"] label,
+    [data-theme="light"] [data-testid="stCaptionContainer"],
+    [data-theme="light"] [data-testid="stCaptionContainer"] p,
+    [data-theme="light"] .small-muted,
+    [data-theme="light"] .scan-footnote,
+    [data-theme="light"] .feature-desc,
+    [data-theme="light"] [data-testid="stWidgetLabel"] p,
+    [data-theme="light"] [data-testid="stRadio"] label,
+    [data-theme="light"] [data-testid="stCheckbox"] label,
+    [data-theme="light"] [data-testid="stToggle"] label {
+      color:#34445c!important;
+      opacity:1!important;
+    }
+    [data-theme="light"] [data-testid="stMetricLabel"],
+    [data-theme="light"] [data-testid="stMetricLabel"] p,
+    [data-theme="light"] [data-testid="stMetricDelta"] {
+      color:#42536b!important;opacity:1!important;
+    }
+    [data-theme="light"] [data-testid="stMetricValue"],
+    [data-theme="light"] [data-testid="stMetricValue"] div {
+      color:#10213a!important;
+    }
+    [data-theme="light"] [data-testid="stExpander"],
+    [data-theme="light"] [data-testid="stExpander"] summary,
+    [data-theme="light"] [data-testid="stExpander"] summary p,
+    [data-theme="light"] [data-testid="stExpander"] [data-testid="stMarkdownContainer"] {
+      color:#17243a!important;
+    }
+    [data-theme="light"] [data-testid="stTextInput"] input,
+    [data-theme="light"] [data-testid="stTextArea"] textarea,
+    [data-theme="light"] [data-testid="stNumberInput"] input,
+    [data-theme="light"] [data-baseweb="select"] > div {
+      color:#17243a!important;background-color:#fff!important;border-color:#b7c8df!important;
+    }
+    [data-theme="light"] [data-testid="stTextInput"] input::placeholder,
+    [data-theme="light"] [data-testid="stTextArea"] textarea::placeholder { color:#65758b!important;opacity:1!important; }
+    [data-theme="light"] [data-testid="stDataFrame"] {
+      --gdg-bg-cell:#ffffff!important;
+      --gdg-bg-cell-medium:#f0f5fd!important;
+      --gdg-bg-header:#dce9fb!important;
+      --gdg-bg-header-hovered:#cbdffc!important;
+      --gdg-text-dark:#15243a!important;
+      --gdg-text-medium:#344760!important;
+      --gdg-text-light:#50637d!important;
+      --gdg-border-color:#c2d1e5!important;
+      background:#fff!important;
+      color:#15243a!important;
+      box-shadow:0 8px 24px rgba(23,53,91,.08),0 0 0 1px rgba(23,105,255,.045)!important;
+    }
+    [data-theme="light"] [data-testid="stTable"] table,
+    [data-theme="light"] [data-testid="stTable"] th,
+    [data-theme="light"] [data-testid="stTable"] td { color:#17243a!important;border-color:#d0dbea!important; }
+    [data-theme="light"] [data-testid="stTable"] th { background:#e6efff!important;font-weight:800!important; }
+    [data-theme="light"] [data-testid="stAlert"] { color:#17243a!important;background:#f5f9ff!important; }
+    [data-theme="light"] [data-testid="stAlert"] p { color:#263952!important; }
+    [data-theme="light"] [data-testid="stCodeBlock"] pre,
+    [data-theme="light"] [data-testid="stCode"] { color:#1b2b42!important;background:#edf3fb!important; }
+    [data-theme="light"] .issue-card,[data-theme="light"] .deduction-card,
+    [data-theme="light"] .feature-panel,[data-theme="light"] .risk-panel {
+      color:#17243a!important;background:rgba(255,255,255,.96)!important;
+      border-color:rgba(65,94,135,.28)!important;
+    }
+    [data-theme="light"] .issue-card *,[data-theme="light"] .deduction-card *,
+    [data-theme="light"] .feature-panel *,[data-theme="light"] .risk-panel * { color:inherit; }
+    [data-theme="light"] .feature-title { color:#fff!important;-webkit-text-fill-color:#fff!important;background-image:none!important;background-color:#102e68!important; }
+    [data-theme="light"] .feature-title:before { background:linear-gradient(110deg,#0c2452,#17468b 56%,#075f78)!important; }
+
+    /* Dark mode: eliminate dim grey copy on dark panels, badges and data widgets. */
+    html[data-theme="dark"], body[data-theme="dark"], [data-theme="dark"] {
+      --text-color:#f3f7ff;
+      --secondary-text-color:#c4d2e6;
+    }
+    html[data-theme="dark"] [data-testid="stAppViewContainer"],
+    body[data-theme="dark"] [data-testid="stAppViewContainer"],
+    [data-theme="dark"] [data-testid="stAppViewContainer"] { color:#f3f7ff!important; }
+    [data-theme="dark"] [data-testid="stMarkdownContainer"],
+    [data-theme="dark"] [data-testid="stMarkdownContainer"] p,
+    [data-theme="dark"] [data-testid="stMarkdownContainer"] li,
+    [data-theme="dark"] [data-testid="stMarkdownContainer"] label,
+    [data-theme="dark"] [data-testid="stCaptionContainer"],
+    [data-theme="dark"] [data-testid="stCaptionContainer"] p,
+    [data-theme="dark"] .small-muted,
+    [data-theme="dark"] .scan-footnote,
+    [data-theme="dark"] .feature-desc,
+    [data-theme="dark"] [data-testid="stWidgetLabel"] p,
+    [data-theme="dark"] [data-testid="stRadio"] label,
+    [data-theme="dark"] [data-testid="stCheckbox"] label,
+    [data-theme="dark"] [data-testid="stToggle"] label {
+      color:#d5e2f4!important;opacity:1!important;
+    }
+    [data-theme="dark"] [data-testid="stMetricLabel"],
+    [data-theme="dark"] [data-testid="stMetricLabel"] p,
+    [data-theme="dark"] [data-testid="stMetricDelta"] { color:#c4d2e6!important;opacity:1!important; }
+    [data-theme="dark"] [data-testid="stMetricValue"],
+    [data-theme="dark"] [data-testid="stMetricValue"] div { color:#f3f7ff!important; }
+    [data-theme="dark"] [data-testid="stExpander"],
+    [data-theme="dark"] [data-testid="stExpander"] summary,
+    [data-theme="dark"] [data-testid="stExpander"] summary p,
+    [data-theme="dark"] [data-testid="stExpander"] [data-testid="stMarkdownContainer"] { color:#f3f7ff!important; }
+    [data-theme="dark"] [data-testid="stTextInput"] input,
+    [data-theme="dark"] [data-testid="stTextArea"] textarea,
+    [data-theme="dark"] [data-testid="stNumberInput"] input,
+    [data-theme="dark"] [data-baseweb="select"] > div {
+      color:#f3f7ff!important;background-color:#0d1b2e!important;border-color:#36516f!important;
+    }
+    [data-theme="dark"] [data-testid="stTextInput"] input::placeholder,
+    [data-theme="dark"] [data-testid="stTextArea"] textarea::placeholder { color:#a9bad0!important;opacity:1!important; }
+    [data-theme="dark"] [data-testid="stDataFrame"] {
+      --gdg-bg-cell:#0c192b!important;
+      --gdg-bg-cell-medium:#12243a!important;
+      --gdg-bg-header:#1a3150!important;
+      --gdg-bg-header-hovered:#24466d!important;
+      --gdg-text-dark:#f2f7ff!important;
+      --gdg-text-medium:#d8e5f5!important;
+      --gdg-text-light:#b7cbe3!important;
+      --gdg-border-color:#304966!important;
+      background:#0c192b!important;color:#f2f7ff!important;
+      box-shadow:0 8px 28px rgba(0,0,0,.18),0 0 0 1px rgba(50,215,255,.045)!important;
+    }
+    [data-theme="dark"] [data-testid="stTable"] table,
+    [data-theme="dark"] [data-testid="stTable"] th,
+    [data-theme="dark"] [data-testid="stTable"] td { color:#edf5ff!important;border-color:#30445d!important; }
+    [data-theme="dark"] [data-testid="stTable"] th { background:#172d49!important;font-weight:800!important; }
+    [data-theme="dark"] [data-testid="stAlert"] { color:#f3f7ff!important;background:#10233b!important; }
+    [data-theme="dark"] [data-testid="stAlert"] p { color:#e5efff!important; }
+    [data-theme="dark"] [data-testid="stCodeBlock"] pre,
+    [data-theme="dark"] [data-testid="stCode"] { color:#e6f4ff!important;background:#0b1728!important; }
+    [data-theme="dark"] .issue-card,[data-theme="dark"] .deduction-card,
+    [data-theme="dark"] .feature-panel,[data-theme="dark"] .risk-panel {
+      color:#f0f6ff!important;background:rgba(12,28,49,.94)!important;
+      border-color:rgba(105,155,210,.32)!important;
+    }
+    [data-theme="dark"] .issue-card *,[data-theme="dark"] .deduction-card *,
+    [data-theme="dark"] .feature-panel *,[data-theme="dark"] .risk-panel * { color:inherit; }
+
+    /* Gold/red/ultramarine cursor halo; still subtle enough to preserve focus. */
+    .af-cursor-orb {
+      background:radial-gradient(circle at 36% 36%,rgba(50,215,255,.17) 0%,rgba(67,56,202,.12) 28%,rgba(246,189,22,.075) 47%,rgba(225,6,0,.045) 60%,transparent 73%)!important;
+      filter:saturate(1.2);
+    }
+    [data-theme="light"] .af-cursor-orb { opacity:.48!important; }
+    .af-cursor-active[data-testid="stMetric"],.af-cursor-active.issue-card,
+    .af-cursor-active.deduction-card,.af-cursor-active.feature-panel,
+    .af-cursor-active.risk-panel,.af-cursor-active[data-testid="stDataFrame"] {
+      outline:1px solid rgba(50,215,255,.18);
+    }
+    @media(prefers-reduced-motion:reduce) {
+      .hero:before,.hero-float,.hero:after,[class*="st-key-scan_input_panel"]:before { animation:none!important; }
+      [data-testid="stMetric"],.issue-card,.deduction-card,.feature-panel,.risk-panel,
+      [data-testid="stDataFrame"],.hero-pill { transform:none!important; }
+    }
+
     </style>
     """,
     unsafe_allow_html=True,
@@ -433,8 +628,8 @@ components.html(
       try {
         const doc = window.parent.document;
         const win = window.parent;
-        if (doc.__accessifyCursorLayerV5) return;
-        doc.__accessifyCursorLayerV5 = true;
+        if (doc.__accessifyCursorLayerV6) return;
+        doc.__accessifyCursorLayerV6 = true;
 
         const style = doc.createElement('style');
         style.textContent = `
