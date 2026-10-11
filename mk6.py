@@ -2241,9 +2241,9 @@ with st.expander(
     st.caption(
         "The uploaded AccessGuru dataset is actively used by the ML layer: "
         "Accessify trains a TF-IDF + Ridge impact model and performs semantic retrieval against real-world accessibility violation records."
-        ""We chose the AccessGuru Web Accessibility Violations Dataset because our project, Accessify, aims to identify and help address website accessibility issues.
+        "We chose the AccessGuru Web Accessibility Violations Dataset because our project, Accessify, aims to identify and help address website accessibility issues."
 
-The dataset contains approximately 3,524 violation records collected from 588 webpages, covering around 94 types of accessibility violations. It provides useful information such as violation descriptions, severity, affected HTML elements, and WCAG references."
+        "The dataset contains approximately 3,524 violation records collected from 588 webpages, covering around 94 types of accessibility violations. It provides useful information such as violation descriptions, severity, affected HTML elements, and WCAG references."
     )
 
 
