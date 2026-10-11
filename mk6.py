@@ -1,39 +1,7 @@
-"""
-Accessify: automated web accessibility auditor
-------------------------------------------------
-One-file hackathon application.
-
-Dataset:
-    AccessGuru Original_full_data.csv
-
-Run:
-    pip install streamlit pandas numpy scikit-learn requests beautifulsoup4 lxml
-    streamlit run app.py
-
-Optional:
-    Put Original_full_data.csv in the same folder as this file.
-
-What it does:
-    1. Accepts a website URL.
-    2. Downloads its HTML.
-    3. Runs a practical accessibility scan.
-    4. Uses the AccessGuru dataset to learn violation-impact scores
-       and retrieve dataset-grounded recommendations.
-    5. Produces an interpretable 0-100 accessibility screening score.
-    6. Shows critical problems, WCAG-related guidance and code fixes.
-    7. Lets the user download a report.
-
-Important:
-    This is an automated screening tool, NOT a certification of WCAG
-    compliance. Real accessibility testing should include manual testing
-    and testing with assistive technologies/screen-reader users.
-"""
-
 import re
 import io
 import html
 from urllib.parse import urlparse
-
 import numpy as np
 import pandas as pd
 import requests
@@ -45,15 +13,10 @@ from sklearn.linear_model import LogisticRegression, Ridge
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.pipeline import Pipeline
 from sklearn.tree import DecisionTreeClassifier
-
-
-# ============================================================
 # PAGE CONFIG
-# ============================================================
-
 st.set_page_config(
     page_title="Accessify | Web Accessibility",
-    page_icon="♿",
+    page_icon="🛠️",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -426,13 +389,7 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-
-
-# ============================================================
 # CURSOR INTERACTION LAYER — UI ONLY
-# ============================================================
-# Runs in a tiny component and enhances the parent Streamlit page.
-# If the browser blocks parent access, normal CSS hover states still work.
 components.html(
     """
     <script>
@@ -2088,8 +2045,8 @@ def find_source_line_for_issue(issue, source_html):
 
 st.markdown(
     '<div class="hero">'
-    '<div class="hero-topline"><span class="hero-dot"></span> AI-ASSISTED WEB ACCESSIBILITY</div>'
-    '<div class="brand">♿ ACCESS<span class="brand-mark">IFY</span></div>'
+    '<div class="hero-topline"><span class="hero-dot"></span> Automated Accessibility Engine</div>'
+    '<div class="brand">🛠️ ACCESS<span class="brand-mark">IFY</span></div>'
     '<div class="project-name">Make every click count. Make the web work for everyone.</div>'
     '<div class="hero-desc">An automated auditing tool that scans websites for accessibility flaws—such as missing structural tags, unclear controls, and poor visual contrast—and gives developers practical ways to improve the experience for everyone.</div>'
     '<div class="hero-pills"><span class="hero-pill">✦ Smart issue detection</span><span class="hero-pill">◈ WCAG-oriented checks</span><span class="hero-pill">⌁ Explainable risk insights</span></div>'
@@ -2097,12 +2054,7 @@ st.markdown(
     '</div>',
     unsafe_allow_html=True,
 )
-
-
-# ============================================================
 # FIRST-SCREEN URL SCAN PANEL
-# ============================================================
-
 st.markdown(
     '<section class="scan-intro">'
     '<div class="scan-kicker"><span class="scan-kicker-dot"></span> READY WHEN YOU ARE</div>'
@@ -2111,7 +2063,6 @@ st.markdown(
     '</section>',
     unsafe_allow_html=True,
 )
-
 with st.container(key="scan_input_panel"):
     with st.form("accessify_scan_form", clear_on_submit=False):
         url_input = st.text_input(
@@ -2152,7 +2103,7 @@ st.markdown(
 
 with st.sidebar:
 
-    st.header("♿ Accessify")
+    st.header("🛠️ Accessify")
 
     st.write(
         """
