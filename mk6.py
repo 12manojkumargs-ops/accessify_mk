@@ -2379,7 +2379,7 @@ if "analysis" in st.session_state:
 
     st.divider()
 
-    st.markdown("## 📈 Accessibility Results")
+    st.markdown("## Accessibility Results")
 
     st.markdown(
         f'<div class="error-badge">⚠️ {len(issues)} detected accessibility issue(s)</div>',
