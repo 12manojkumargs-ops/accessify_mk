@@ -144,7 +144,7 @@ st.markdown(
       div[data-testid="stExpander"] { background:rgba(16,35,62,.35); }
     }
 
-    /* ACCESSIFY: Red Bull Racing-inspired midnight / cyan / teal / ultramarine palette */
+    /* ACCESSIFY: Red Bull Racing-inspired midnight / cyan / teal / ultramarine / racing-red / gold palette */
     :root { --af-navy:#06101f; --af-blue:#1769ff; --af-ultra:#4338ca; --af-cyan:#32d7ff; --af-teal:#25e0c1; --af-red:#e10600; }
     [data-testid="stAppViewContainer"] { background:radial-gradient(ellipse at 5% 3%,rgba(23,105,255,.13),transparent 34%),radial-gradient(ellipse at 96% 7%,rgba(37,224,193,.08),transparent 27%),radial-gradient(ellipse at 78% 40%,rgba(225,6,0,.035),transparent 25%); }
     .hero { background:linear-gradient(112deg,#050b16 0%,#071b37 32%,#123c86 60%,#087eaa 83%,#0b9b91 100%); border:1px solid rgba(76,213,255,.38); box-shadow:0 22px 60px rgba(0,29,78,.24),0 0 28px rgba(23,105,255,.08),inset 0 1px 0 rgba(255,255,255,.15); animation:hero-arrive .75s cubic-bezier(.2,.8,.2,1) both; }
@@ -350,6 +350,71 @@ st.markdown(
       .hero:before { left:auto;top:auto;right:-65px;bottom:auto;transform:none; }
     }
 
+    /* V5: animated racing-gradient titles and richer cursor-reactive glow */
+    :root { --af-racing-gradient:linear-gradient(100deg,#315bff 0%,#5b35ff 19%,#00c8ff 38%,#f6bd16 59%,#ff3b45 76%,#315bff 100%); }
+    .brand-mark,.scan-title span,.feature-title,.stMarkdown h1,.stMarkdown h2,.stMarkdown h3 {
+      background-image:var(--af-racing-gradient)!important;
+      background-size:260% 100%!important;
+      background-position:0% 50%;
+      animation:af-title-race 6.2s linear infinite;
+      -webkit-background-clip:text!important;background-clip:text!important;
+      -webkit-text-fill-color:transparent!important;color:transparent!important;
+      text-shadow:0 0 17px rgba(49,91,255,.10);
+      transition:background-position .22s ease,filter .22s ease,text-shadow .22s ease;
+    }
+    .brand-mark { filter:drop-shadow(0 0 8px rgba(0,200,255,.18)); }
+    .scan-title span { filter:drop-shadow(0 0 9px rgba(0,200,255,.16)); }
+    .feature-title {
+      position:relative;isolation:isolate;display:inline-block;
+      background-color:transparent!important;background-image:var(--af-racing-gradient)!important;
+      border-left:0!important;padding:.62rem 1rem .62rem 1.12rem!important;
+      filter:drop-shadow(0 0 9px rgba(49,91,255,.16));
+    }
+    .feature-title:before {
+      content:"";position:absolute;inset:0;z-index:-1;border-radius:11px;
+      background:linear-gradient(110deg,rgba(7,22,53,.97),rgba(22,44,105,.96) 52%,rgba(5,69,91,.94));
+      border:1px solid rgba(50,215,255,.42);
+      box-shadow:0 0 0 1px rgba(67,56,202,.12),0 7px 22px rgba(23,105,255,.18),0 0 22px rgba(50,215,255,.09),0 0 12px rgba(246,189,22,.055);
+      transition:box-shadow .22s ease,border-color .22s ease;
+    }
+    .feature-title:after {
+      content:"";position:absolute;left:0;top:14%;height:72%;width:3px;border-radius:3px;
+      background:linear-gradient(180deg,#32d7ff,#f6bd16,#e10600);box-shadow:0 0 12px rgba(50,215,255,.48);
+    }
+    .af-text-active.brand-mark,.af-text-active.scan-title span,.af-text-active.feature-title,
+    .stMarkdown h1.af-text-active,.stMarkdown h2.af-text-active,.stMarkdown h3.af-text-active {
+      animation-play-state:paused!important;
+      background-position:var(--af-text-x,75%) 50%!important;
+      filter:drop-shadow(0 0 10px rgba(0,200,255,.36)) drop-shadow(0 0 16px rgba(246,189,22,.20))!important;
+      text-shadow:0 0 13px rgba(0,200,255,.34),0 0 24px rgba(246,189,22,.14),0 0 12px rgba(225,6,0,.12)!important;
+    }
+    .af-text-active.feature-title:before {
+      border-color:rgba(246,189,22,.76);
+      box-shadow:0 0 0 1px rgba(67,56,202,.25),0 8px 26px rgba(23,105,255,.27),0 0 28px rgba(50,215,255,.20),0 0 18px rgba(246,189,22,.12);
+    }
+    .hero { box-shadow:0 24px 70px rgba(0,54,130,.30),0 0 30px rgba(23,105,255,.16),0 0 14px rgba(225,6,0,.07),inset 0 1px 0 rgba(255,255,255,.22); }
+    .hero-float { box-shadow:0 18px 44px rgba(0,0,0,.26),0 0 26px rgba(50,215,255,.17),0 0 13px rgba(246,189,22,.08),inset 0 1px 0 rgba(255,255,255,.14); }
+    .hero-pill:hover { box-shadow:0 9px 25px rgba(50,215,255,.20),0 0 16px rgba(246,189,22,.13),0 0 12px rgba(225,6,0,.08)!important; }
+    [data-testid="stMetric"]:hover,.issue-card:hover,.deduction-card:hover,.feature-panel:hover,.risk-panel:hover,
+    [data-testid="stDataFrame"]:hover {
+      box-shadow:0 16px 36px rgba(23,105,255,.17),0 0 24px rgba(50,215,255,.13),0 0 12px rgba(246,189,22,.055)!important;
+    }
+    .stButton > button:hover,.stDownloadButton > button:hover {
+      box-shadow:0 12px 30px rgba(23,105,255,.27),0 0 24px rgba(50,215,255,.18),0 0 13px rgba(225,6,0,.12)!important;
+    }
+    [data-theme="light"] .stMarkdown h1,[data-theme="light"] .stMarkdown h2,[data-theme="light"] .stMarkdown h3 {
+      background-image:linear-gradient(100deg,#173eb9 0%,#4338ca 20%,#007baf 40%,#a56a00 60%,#c51f36 78%,#173eb9 100%)!important;
+    }
+    [data-theme="light"] .stMarkdown h1.af-text-active,[data-theme="light"] .stMarkdown h2.af-text-active,[data-theme="light"] .stMarkdown h3.af-text-active {
+      filter:drop-shadow(0 0 8px rgba(23,105,255,.22)) drop-shadow(0 0 10px rgba(197,31,54,.12))!important;
+    }
+    @keyframes af-title-race { 0%{background-position:0% 50%}100%{background-position:260% 50%} }
+    @media(prefers-reduced-motion:reduce) {
+      .brand-mark,.scan-title span,.feature-title,.stMarkdown h1,.stMarkdown h2,.stMarkdown h3 { animation:none!important; }
+      .af-text-active.brand-mark,.af-text-active.scan-title span,.af-text-active.feature-title,
+      .stMarkdown h1.af-text-active,.stMarkdown h2.af-text-active,.stMarkdown h3.af-text-active { filter:none!important;text-shadow:none!important; }
+    }
+
     </style>
     """,
     unsafe_allow_html=True,
@@ -368,8 +433,8 @@ components.html(
       try {
         const doc = window.parent.document;
         const win = window.parent;
-        if (doc.__accessifyCursorLayerV4) return;
-        doc.__accessifyCursorLayerV4 = true;
+        if (doc.__accessifyCursorLayerV5) return;
+        doc.__accessifyCursorLayerV5 = true;
 
         const style = doc.createElement('style');
         style.textContent = `
@@ -389,7 +454,9 @@ components.html(
         const buttonSelector = '.stButton > button, .stDownloadButton > button, [data-testid="stFormSubmitButton"] > button';
         const inputPanelSelector = '[class*="st-key-scan_input_panel"]';
         const interactiveSelector = `${cardSelector}, ${buttonSelector}, ${inputPanelSelector}`;
+        const textSelector = '.brand-mark, .scan-title span, .feature-title, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3';
         let active = null;
+        let activeText = null;
         let frame = 0;
         let lastX = 0, lastY = 0;
 
@@ -399,6 +466,12 @@ components.html(
           ['--af-tx','--af-ty','--af-rx','--af-ry'].forEach(k => active.style.removeProperty(k));
           active = null;
         };
+        const clearActiveText = () => {
+          if (!activeText) return;
+          activeText.classList.remove('af-text-active');
+          activeText.style.removeProperty('--af-text-x');
+          activeText = null;
+        };
 
         doc.addEventListener('pointerover', (event) => {
           if (event.pointerType && event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
@@ -407,6 +480,12 @@ components.html(
             clearActive();
             active = next;
             if (active) active.classList.add('af-cursor-active');
+          }
+          const nextText = event.target && event.target.closest ? event.target.closest(textSelector) : null;
+          if (nextText !== activeText) {
+            clearActiveText();
+            activeText = nextText;
+            if (activeText) activeText.classList.add('af-text-active');
           }
         }, true);
 
@@ -418,6 +497,11 @@ components.html(
             orb.style.left = `${lastX}px`;
             orb.style.top = `${lastY}px`;
             orb.classList.add('af-visible');
+            if (activeText && activeText.isConnected) {
+              const textRect = activeText.getBoundingClientRect();
+              const textDX = Math.max(0, Math.min(1, (lastX - textRect.left) / Math.max(1, textRect.width)));
+              activeText.style.setProperty('--af-text-x', `${Math.round(textDX * 100)}%`);
+            }
             const hero = doc.querySelector('.hero');
             if (hero) {
               const rect = hero.getBoundingClientRect();
@@ -448,10 +532,12 @@ components.html(
           if (event.target === doc.documentElement || event.target === doc.body) {
             orb.classList.remove('af-visible');
             clearActive();
+            clearActiveText();
           }
           if (active && event.target === active && !active.contains(event.relatedTarget)) clearActive();
+          if (activeText && event.target === activeText && !activeText.contains(event.relatedTarget)) clearActiveText();
         }, true);
-        win.addEventListener('blur', () => { orb.classList.remove('af-visible'); clearActive(); });
+        win.addEventListener('blur', () => { orb.classList.remove('af-visible'); clearActive(); clearActiveText(); });
 
         // Streamlit rerenders components during form submissions; the delegated listeners
         // keep working, and a tiny observer removes stale inline styles from detached nodes.
