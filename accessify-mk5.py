@@ -41,8 +41,9 @@ import streamlit as st
 import streamlit.components.v1 as components
 from bs4 import BeautifulSoup
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import Ridge
+from sklearn.linear_model import LogisticRegression, Ridge
 from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.pipeline import Pipeline
 from sklearn.tree import DecisionTreeClassifier
 
 
@@ -334,8 +335,7 @@ st.markdown(
       transform:translate(-50%,-50%);opacity:0;transition:opacity .22s ease;mix-blend-mode:screen;
     }
     .af-cursor-orb.af-visible { opacity:1; }
-    .hero { --af-hero-x:50%; --af-hero-y:50%; }
-    .hero:before { left:var(--af-hero-x);top:var(--af-hero-y);right:auto;bottom:auto;transform:translate(-50%,-50%);width:420px;height:420px;transition:opacity .25s ease; }
+    /* Keep the hero's decorative glow stationary; cursor effects remain on other elements. */
     .hero:after { pointer-events:none; }
     .hero, [class*="st-key-scan_input_panel"] { transition:box-shadow .28s ease,border-color .28s ease; }
     .af-scan-sheen { position:relative; }
@@ -352,7 +352,7 @@ st.markdown(
 
     /* V5: animated racing-gradient titles and richer cursor-reactive glow */
     :root { --af-racing-gradient:linear-gradient(100deg,#315bff 0%,#5b35ff 19%,#00c8ff 38%,#f6bd16 59%,#ff3b45 76%,#315bff 100%); }
-    .brand-mark,.scan-title span,.feature-title,.stMarkdown h1,.stMarkdown h2,.stMarkdown h3 {
+    .brand-mark,.scan-title span,.stMarkdown h1,.stMarkdown h2,.stMarkdown h3 {
       background-image:var(--af-racing-gradient)!important;
       background-size:260% 100%!important;
       background-position:0% 50%;
@@ -366,32 +366,38 @@ st.markdown(
     .scan-title span { filter:drop-shadow(0 0 9px rgba(0,200,255,.16)); }
     .feature-title {
       position:relative;isolation:isolate;display:inline-block;
-      background-color:transparent!important;background-image:var(--af-racing-gradient)!important;
+      color:#f4f8ff!important;-webkit-text-fill-color:#f4f8ff!important;
+      background:none!important;background-color:transparent!important;background-image:none!important;
       border-left:0!important;padding:.62rem 1rem .62rem 1.12rem!important;
       filter:drop-shadow(0 0 9px rgba(49,91,255,.16));
+      text-shadow:0 0 10px rgba(50,215,255,.12);
     }
     .feature-title:before {
       content:"";position:absolute;inset:0;z-index:-1;border-radius:11px;
-      background:linear-gradient(110deg,rgba(7,22,53,.97),rgba(22,44,105,.96) 52%,rgba(5,69,91,.94));
-      border:1px solid rgba(50,215,255,.42);
-      box-shadow:0 0 0 1px rgba(67,56,202,.12),0 7px 22px rgba(23,105,255,.18),0 0 22px rgba(50,215,255,.09),0 0 12px rgba(246,189,22,.055);
+      background:linear-gradient(110deg,#071635 0%,#162c69 38%,#07566d 68%,#38215f 100%);
+      background-size:220% 100%;animation:af-title-race 8s linear infinite;
+      border:1px solid rgba(50,215,255,.58);
+      box-shadow:0 0 0 1px rgba(67,56,202,.18),0 7px 22px rgba(23,105,255,.22),0 0 22px rgba(50,215,255,.13),0 0 12px rgba(246,189,22,.08);
       transition:box-shadow .22s ease,border-color .22s ease;
     }
+    [data-theme="light"] .feature-title { color:#ffffff!important;-webkit-text-fill-color:#ffffff!important;text-shadow:0 1px 2px rgba(0,0,0,.28),0 0 10px rgba(50,215,255,.16)!important; }
+    [data-theme="dark"] .feature-title { color:#ffffff!important;-webkit-text-fill-color:#ffffff!important; }
     .feature-title:after {
       content:"";position:absolute;left:0;top:14%;height:72%;width:3px;border-radius:3px;
       background:linear-gradient(180deg,#32d7ff,#f6bd16,#e10600);box-shadow:0 0 12px rgba(50,215,255,.48);
     }
-    .af-text-active.brand-mark,.af-text-active.scan-title span,.af-text-active.feature-title,
+    .af-text-active.brand-mark,.af-text-active.scan-title span,
     .stMarkdown h1.af-text-active,.stMarkdown h2.af-text-active,.stMarkdown h3.af-text-active {
       animation-play-state:paused!important;
       background-position:var(--af-text-x,75%) 50%!important;
       filter:drop-shadow(0 0 10px rgba(0,200,255,.36)) drop-shadow(0 0 16px rgba(246,189,22,.20))!important;
       text-shadow:0 0 13px rgba(0,200,255,.34),0 0 24px rgba(246,189,22,.14),0 0 12px rgba(225,6,0,.12)!important;
     }
-    .af-text-active.feature-title:before {
-      border-color:rgba(246,189,22,.76);
-      box-shadow:0 0 0 1px rgba(67,56,202,.25),0 8px 26px rgba(23,105,255,.27),0 0 28px rgba(50,215,255,.20),0 0 18px rgba(246,189,22,.12);
+    .feature-title:hover:before,.af-text-active.feature-title:before {
+      border-color:rgba(246,189,22,.82);
+      box-shadow:0 0 0 1px rgba(67,56,202,.25),0 8px 26px rgba(23,105,255,.30),0 0 28px rgba(50,215,255,.24),0 0 18px rgba(246,189,22,.15),0 0 12px rgba(225,6,0,.10);
     }
+    .af-text-active.feature-title { color:#fff!important;-webkit-text-fill-color:#fff!important; }
     .hero { box-shadow:0 24px 70px rgba(0,54,130,.30),0 0 30px rgba(23,105,255,.16),0 0 14px rgba(225,6,0,.07),inset 0 1px 0 rgba(255,255,255,.22); }
     .hero-float { box-shadow:0 18px 44px rgba(0,0,0,.26),0 0 26px rgba(50,215,255,.17),0 0 13px rgba(246,189,22,.08),inset 0 1px 0 rgba(255,255,255,.14); }
     .hero-pill:hover { box-shadow:0 9px 25px rgba(50,215,255,.20),0 0 16px rgba(246,189,22,.13),0 0 12px rgba(225,6,0,.08)!important; }
@@ -410,9 +416,10 @@ st.markdown(
     }
     @keyframes af-title-race { 0%{background-position:0% 50%}100%{background-position:260% 50%} }
     @media(prefers-reduced-motion:reduce) {
-      .brand-mark,.scan-title span,.feature-title,.stMarkdown h1,.stMarkdown h2,.stMarkdown h3 { animation:none!important; }
-      .af-text-active.brand-mark,.af-text-active.scan-title span,.af-text-active.feature-title,
+      .brand-mark,.scan-title span,.stMarkdown h1,.stMarkdown h2,.stMarkdown h3 { animation:none!important; }
+      .af-text-active.brand-mark,.af-text-active.scan-title span,
       .stMarkdown h1.af-text-active,.stMarkdown h2.af-text-active,.stMarkdown h3.af-text-active { filter:none!important;text-shadow:none!important; }
+      .feature-title:before { animation:none!important; }
     }
 
     </style>
@@ -448,6 +455,8 @@ components.html(
         const orb = doc.createElement('div');
         orb.className = 'af-cursor-orb';
         orb.setAttribute('aria-hidden', 'true');
+        // Hide only the large cursor-following circle; keep all other cursor interactions.
+        orb.style.display = 'none';
         doc.body.appendChild(orb);
 
         const cardSelector = '[data-testid="stMetric"], .issue-card, .deduction-card, .feature-panel, .risk-panel, [data-testid="stDataFrame"], .hero-pill';
@@ -502,19 +511,7 @@ components.html(
               const textDX = Math.max(0, Math.min(1, (lastX - textRect.left) / Math.max(1, textRect.width)));
               activeText.style.setProperty('--af-text-x', `${Math.round(textDX * 100)}%`);
             }
-            const hero = doc.querySelector('.hero');
-            if (hero) {
-              const rect = hero.getBoundingClientRect();
-              if (lastX >= rect.left && lastX <= rect.right && lastY >= rect.top && lastY <= rect.bottom) {
-                hero.style.setProperty('--af-hero-x', `${((lastX - rect.left) / Math.max(1, rect.width)) * 100}%`);
-                hero.style.setProperty('--af-hero-y', `${((lastY - rect.top) / Math.max(1, rect.height)) * 100}%`);
-                hero.style.boxShadow = '0 24px 70px rgba(0,54,130,.30),0 0 34px rgba(50,215,255,.14),0 0 14px rgba(225,6,0,.06),inset 0 1px 0 rgba(255,255,255,.22)';
-              } else {
-                hero.style.removeProperty('--af-hero-x');
-                hero.style.removeProperty('--af-hero-y');
-                hero.style.removeProperty('box-shadow');
-              }
-            }
+            // Hero title spotlight intentionally stays stationary; other cursor effects remain active.
             if (active && active.isConnected) {
               const rect = active.getBoundingClientRect();
               const dx = Math.max(-1, Math.min(1, (lastX - rect.left) / Math.max(1, rect.width) * 2 - 1));
@@ -754,14 +751,61 @@ def train_tabular_risk_model(df):
     return model, category_frequency
 
 
+@st.cache_resource(show_spinner=False)
+def train_alt_text_nlp_classifier():
+    """Train a lightweight TF-IDF + Logistic Regression text classifier.
+
+    Training labels are weakly supervised from curated examples. This provides
+    an NLP-based screening signal, not a validated judgement of image meaning.
+    """
+    generic_examples = [
+        "image", "img", "photo", "picture", "graphic", "image of",
+        "picture of", "photo of", "click here", "untitled", "placeholder",
+        "image123.jpg", "img_001.png", "DSC00421.JPG", "screenshot.png",
+        "logo.png", "photo.jpg", "image dot png", "a picture", "an image",
+        "banner image", "icon", "image file", "download", "IMG_2024.jpeg",
+        "photo 1", "picture 2", "graphic file", "test image",
+    ]
+    descriptive_examples = [
+        "A golden retriever running across a grassy field",
+        "VIT Vellore campus entrance with students walking",
+        "Search the website", "Open the navigation menu",
+        "Red Bull racing car on the track during a race",
+        "Bar chart comparing monthly energy consumption",
+        "A student using a laptop in a classroom",
+        "Company logo for Accessify accessibility checker",
+        "Close dialog", "Submit registration form",
+        "Map showing the route from the station to campus",
+        "Doctor speaking with a patient in a clinic",
+        "Blue accessibility icon showing a person in a wheelchair",
+        "Graph showing website accessibility scores by category",
+        "A person reading text on a computer screen",
+        "Next page", "Download the annual report PDF",
+        "Students collaborating on a science project",
+        "Solar panel mounted on a rooftop under sunlight",
+        "The homepage logo linking to the site homepage",
+        "Magnifying glass icon for searching articles",
+        "A line chart showing temperature increasing over time",
+    ]
+    texts = generic_examples + descriptive_examples
+    labels = (["likely_unhelpful"] * len(generic_examples) +
+              ["potentially_descriptive"] * len(descriptive_examples))
+    model = Pipeline([
+        ("tfidf", TfidfVectorizer(ngram_range=(1, 2), analyzer="char_wb", min_df=1)),
+        ("classifier", LogisticRegression(max_iter=1000, class_weight="balanced", random_state=42)),
+    ])
+    model.fit(texts, labels)
+    return model
+
+
 def detect_junk_alt_text(soup):
-    """Flag likely unhelpful alt text using transparent NLP-style text signals."""
+    """Use an NLP classifier plus transparent checks to flag suspicious alt text."""
+    model = train_alt_text_nlp_classifier()
     findings = []
     generic_phrases = {
         "image", "img", "photo", "photograph", "picture", "graphic",
         "image of", "picture of", "photo of", "an image", "a picture",
-        "image dot png", "image dot jpg", "image png", "image jpg",
-        "click here", "untitled", "placeholder",
+        "click here", "untitled", "placeholder", "icon",
     }
     file_pattern = re.compile(
         r"^(?:img|image|photo|pic|dsc|screenshot)[_ -]?[a-z0-9_-]*\.(?:png|jpe?g|gif|webp|svg)$",
@@ -769,13 +813,15 @@ def detect_junk_alt_text(soup):
     )
     for img in soup.find_all("img"):
         if not img.has_attr("alt"):
-            continue  # Missing alt is already handled by the existing scanner.
+            continue  # Missing alt is handled by the existing scanner.
         alt = re.sub(r"\s+", " ", str(img.get("alt", ""))).strip()
         if not alt:
             continue  # Empty alt may be correct for decorative images.
         normalized = re.sub(r"[^a-z0-9. ]+", " ", alt.lower()).strip()
-        tokens = re.findall(r"[a-z0-9]+", normalized)
-        unique_ratio = len(set(tokens)) / max(len(tokens), 1)
+        prediction = model.predict([alt])[0]
+        probabilities = model.predict_proba([alt])[0]
+        classes = list(model.classes_)
+        unhelpful_probability = float(probabilities[classes.index("likely_unhelpful")])
         reasons = []
         if normalized in generic_phrases:
             reasons.append("generic label that does not describe the image")
@@ -783,16 +829,16 @@ def detect_junk_alt_text(soup):
             reasons.append("filename-like alt text")
         if re.search(r"\.(png|jpe?g|gif|webp|svg)$", alt, re.I):
             reasons.append("file extension exposed as the alternative text")
-        if len(tokens) <= 2 and any(t in {"image", "photo", "picture", "graphic", "img"} for t in tokens):
-            reasons.append("very short generic wording")
-        if len(tokens) >= 4 and unique_ratio < 0.5:
-            reasons.append("repeated words with little descriptive information")
+        if prediction == "likely_unhelpful" and unhelpful_probability >= 0.55:
+            reasons.append(f"NLP classifier flagged this text as potentially unhelpful ({unhelpful_probability:.0%} model confidence)")
         if reasons:
             findings.append({
                 "alt": alt,
                 "src": str(img.get("src", ""))[:300],
                 "reasons": list(dict.fromkeys(reasons)),
                 "element": str(img)[:1200],
+                "nlp_prediction": prediction,
+                "nlp_confidence": unhelpful_probability,
             })
     return findings
 
@@ -2514,28 +2560,27 @@ if "analysis" in st.session_state:
 
     else:
 
-        issue_df = pd.DataFrame(
-            [
-                {
-                    "What is wrong": x.get("detected_value") or x["title"],
-                    "Evidence / element": re.sub(
-                        r"\s+",
-                        " ",
-                        html.unescape(x.get("element", "")),
-                    )[:220],
-                    "Why it matters": x.get("why_it_matters", ""),
-                    "Specific fix": x.get("specific_fix", x.get("description", "")),
-                    "Severity": severity_name(
-                        x.get("ml_impact", x["severity"])
-                    ),
-                    "ML impact": round(
-                        x.get("ml_impact", x["severity"]),
-                        2,
-                    ),
-                }
-                for x in issues
-            ]
-        )
+        # Add best-effort line numbers and the matching returned-HTML source line
+        # directly to the main Detected Problems table.
+        source_html_for_table = result.get("page_html", "")
+        issue_rows = []
+        for x in issues:
+            source_line, source_code = find_source_line_for_issue(x, source_html_for_table)
+            issue_rows.append({
+                "What is wrong": x.get("detected_value") or x["title"],
+                "Line number": source_line if source_line is not None else "Not resolved",
+                "Code at line": source_code or re.sub(r"\s+", " ", html.unescape(x.get("element", "")))[:260] or "Source snippet unavailable",
+                "Evidence / element": re.sub(
+                    r"\s+",
+                    " ",
+                    html.unescape(x.get("element", "")),
+                )[:220],
+                "Why it matters": x.get("why_it_matters", ""),
+                "Specific fix": x.get("specific_fix", x.get("description", "")),
+                "Severity": severity_name(x.get("ml_impact", x["severity"])),
+                "ML impact": round(x.get("ml_impact", x["severity"]), 2),
+            })
+        issue_df = pd.DataFrame(issue_rows)
 
         issue_df = issue_df.sort_values(
             "ML impact",
@@ -2546,6 +2591,10 @@ if "analysis" in st.session_state:
             issue_df,
             use_container_width=True,
             hide_index=True,
+        )
+        st.caption(
+            "Line numbers refer to the fetched HTML response when a matching source line can be identified. "
+            "If the page is minified, generated by JavaScript, or contains repeated elements, the line may be unavailable or approximate."
         )
 
         # ----------------------------------------------------
@@ -2883,7 +2932,7 @@ background: #fff;""",
         junk_alt_findings = []
 
     st.markdown('<div id="junk-alt-text" class="feature-title">🖼️ Image Alt-Text Check</div>', unsafe_allow_html=True)
-    st.markdown('<div class="feature-desc">Finds image descriptions that exist but may not help a screen-reader user.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="feature-desc">Uses a TF-IDF + Logistic Regression NLP classifier to flag potentially unhelpful image descriptions for review.</div>', unsafe_allow_html=True)
     if junk_alt_findings:
         st.markdown(
             f'<div class="risk-panel"><strong>🔴 {len(junk_alt_findings)} likely junk alt-text finding(s)</strong></div>',
@@ -2891,6 +2940,10 @@ background: #fff;""",
         )
         for i, finding in enumerate(junk_alt_findings, 1):
             with st.expander(f"{i}. Unhelpful alt text: {finding['alt'][:100]}"):
+                st.markdown("**NLP classifier result**")
+                st.write(f"Prediction: `{finding.get('nlp_prediction', 'not available')}`")
+                st.write(f"Estimated model confidence for potentially unhelpful text: {finding.get('nlp_confidence', 0):.0%}")
+                st.caption("This lightweight model uses curated example phrases for weak supervision; confidence is not a validated probability that the alt text is wrong.")
                 st.markdown("**Why it was flagged**")
                 for reason in finding["reasons"]:
                     st.write(f"• {reason}")
