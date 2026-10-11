@@ -334,8 +334,7 @@ st.markdown(
       transform:translate(-50%,-50%);opacity:0;transition:opacity .22s ease;mix-blend-mode:screen;
     }
     .af-cursor-orb.af-visible { opacity:1; }
-    .hero { --af-hero-x:50%; --af-hero-y:50%; }
-    .hero:before { left:var(--af-hero-x);top:var(--af-hero-y);right:auto;bottom:auto;transform:translate(-50%,-50%);width:420px;height:420px;transition:opacity .25s ease; }
+    /* Keep the hero's decorative glow stationary; cursor effects remain on other elements. */
     .hero:after { pointer-events:none; }
     .hero, [class*="st-key-scan_input_panel"] { transition:box-shadow .28s ease,border-color .28s ease; }
     .af-scan-sheen { position:relative; }
@@ -455,6 +454,8 @@ components.html(
         const orb = doc.createElement('div');
         orb.className = 'af-cursor-orb';
         orb.setAttribute('aria-hidden', 'true');
+        // Hide only the large cursor-following circle; keep all other cursor interactions.
+        orb.style.display = 'none';
         doc.body.appendChild(orb);
 
         const cardSelector = '[data-testid="stMetric"], .issue-card, .deduction-card, .feature-panel, .risk-panel, [data-testid="stDataFrame"], .hero-pill';
@@ -509,19 +510,7 @@ components.html(
               const textDX = Math.max(0, Math.min(1, (lastX - textRect.left) / Math.max(1, textRect.width)));
               activeText.style.setProperty('--af-text-x', `${Math.round(textDX * 100)}%`);
             }
-            const hero = doc.querySelector('.hero');
-            if (hero) {
-              const rect = hero.getBoundingClientRect();
-              if (lastX >= rect.left && lastX <= rect.right && lastY >= rect.top && lastY <= rect.bottom) {
-                hero.style.setProperty('--af-hero-x', `${((lastX - rect.left) / Math.max(1, rect.width)) * 100}%`);
-                hero.style.setProperty('--af-hero-y', `${((lastY - rect.top) / Math.max(1, rect.height)) * 100}%`);
-                hero.style.boxShadow = '0 24px 70px rgba(0,54,130,.30),0 0 34px rgba(50,215,255,.14),0 0 14px rgba(225,6,0,.06),inset 0 1px 0 rgba(255,255,255,.22)';
-              } else {
-                hero.style.removeProperty('--af-hero-x');
-                hero.style.removeProperty('--af-hero-y');
-                hero.style.removeProperty('box-shadow');
-              }
-            }
+            // Hero title spotlight intentionally stays stationary; other cursor effects remain active.
             if (active && active.isConnected) {
               const rect = active.getBoundingClientRect();
               const dx = Math.max(-1, Math.min(1, (lastX - rect.left) / Math.max(1, rect.width) * 2 - 1));
