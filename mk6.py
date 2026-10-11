@@ -2151,7 +2151,7 @@ with st.sidebar:
     st.caption(
         "Automated accessibility testing cannot prove that a "
         "website is fully accessible. Manual testing and testing "
-        "with people who use assistive technologies are still important."
+        "with people who use assistive technologies are still important. ~Accessify-MK6"
     )
 
 
