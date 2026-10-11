@@ -2943,7 +2943,7 @@ background: #fff;""",
 
     risk_cols = st.columns(4)
     risk_cols[0].metric("Total issues", issue_count)
-    risk_cols[1].metric("Critical / near-critical", critical_count)
+    
     risk_cols[2].metric("Serious", serious_count)
     risk_cols[3].metric("Junk alt text", junk_count)
 
