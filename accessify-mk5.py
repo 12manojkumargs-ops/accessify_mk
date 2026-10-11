@@ -45,6 +45,7 @@ from sklearn.linear_model import LogisticRegression, Ridge
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.pipeline import Pipeline
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
 
 
 # ============================================================
@@ -744,8 +745,9 @@ def train_tabular_risk_model(df):
             labels.append("High")
         else:
             labels.append("Critical")
-    model = DecisionTreeClassifier(
-        max_depth=5, min_samples_leaf=5, class_weight="balanced", random_state=42
+    model = RandomForestClassifier(
+        n_estimators=120, max_depth=6, min_samples_leaf=3,
+        class_weight="balanced_subsample", random_state=42, n_jobs=-1
     )
     model.fit(np.asarray(rows, dtype=float), np.asarray(labels))
     return model, category_frequency
@@ -2171,7 +2173,7 @@ with st.sidebar:
         <div class="side-nav">
           <a href="#detected-problems">🚨 Detected Problems</a>
           <a href="#developer-recommendations">🛠 Developer Recommendations</a>
-          <a href="#junk-alt-text">🖼️ Image Alt-Text Check</a>
+          <a href="#junk-alt-text">🖼️ Junk Alt-Text Detector — NLP Classifier</a>
           <a href="#risk-predictor">🚦 Accessibility Risk</a>
           <a href="#explainable-ai">📊 Code-Line Error Likelihood</a>
         </div>
@@ -2931,7 +2933,7 @@ background: #fff;""",
     except Exception:
         junk_alt_findings = []
 
-    st.markdown('<div id="junk-alt-text" class="feature-title">🖼️ Image Alt-Text Check</div>', unsafe_allow_html=True)
+    st.markdown('<div id="junk-alt-text" class="feature-title">🖼️ Junk Alt-Text Detector — NLP Classifier</div>', unsafe_allow_html=True)
     st.markdown('<div class="feature-desc">Uses a TF-IDF + Logistic Regression NLP classifier to flag potentially unhelpful image descriptions for review.</div>', unsafe_allow_html=True)
     if junk_alt_findings:
         st.markdown(
@@ -2996,13 +2998,13 @@ background: #fff;""",
         predicted_class = str(risk_model.predict([feature_row])[0])
         issue_risk_rows.append({
             "Issue": issue.get("title", issue.get("rule", "Accessibility issue")),
-            "Decision-tree risk class": predicted_class,
+            "Random Forest risk class": predicted_class,
             "Existing ML impact (/5)": round(float(issue.get("ml_impact", issue.get("severity", 1))), 2),
         })
 
     if issue_risk_rows:
         st.dataframe(pd.DataFrame(issue_risk_rows), use_container_width=True, hide_index=True)
-        risk_classes = [row["Decision-tree risk class"] for row in issue_risk_rows]
+        risk_classes = [row["Random Forest risk class"] for row in issue_risk_rows]
         if "Critical" in risk_classes or critical_count > 0:
             overall_risk = "HIGH"
             risk_color = "#E10600"
@@ -3031,8 +3033,8 @@ background: #fff;""",
         "observed issue counts and should be interpreted as a screening aid, not a certified risk score."
     )
 
-    st.markdown('<div id="explainable-ai" class="feature-title">🧬 Accessibility Code-Line Error Likelihood</div>', unsafe_allow_html=True)
-    st.markdown('<div class="feature-desc">Ranks the source lines connected to detected accessibility findings, so developers can see where to investigate first.</div>', unsafe_allow_html=True)
+    st.markdown('<div id="explainable-ai" class="feature-title">🧬 Explainable AI Attribution Engine</div>', unsafe_allow_html=True)
+    st.markdown('<div class="feature-desc">Uses a Random Forest ensemble of decision trees to rank code patterns and source locations associated with detected accessibility findings. This is a prioritisation aid, not proof that a developer made an error.</div>', unsafe_allow_html=True)
     source_html_for_lines = result.get("page_html", "")
     line_findings = []
     for issue in issues:
@@ -3075,8 +3077,8 @@ background: #fff;""",
     else:
         st.success("No accessibility findings were available to rank. Run a scan with a page that returns readable HTML first.")
 
-    st.markdown("#### Model signals behind the risk estimate")
-    st.caption("These are the input patterns the Decision Tree used most often; they complement the line-level findings above.")
+    st.markdown("#### Explainable AI: Random Forest feature attribution")
+    st.caption("These feature-importance values show which input patterns the Random Forest relied on most across its trees. They describe model behaviour, not causal proof that a pattern caused the accessibility issue.")
     importance_df = pd.DataFrame({
         "Input feature": RISK_FEATURE_NAMES,
         "Feature importance": risk_model.feature_importances_,
